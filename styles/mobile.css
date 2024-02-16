@@ -1,0 +1,780 @@
+/*========================================================================================================================
+==========================================================================================================================
+  ___ ___  _  _ _____ ___ 
+ | __/ _ \| \| |_   _/ __|
+ | _| (_) | .` | | | \__ \
+ |_| \___/|_|\_| |_| |___/
+--------------------------------------------*/
+@font-face {
+	font-family: "Black Chancery";
+	src: url("../fonts/BLKCHCRY.ttf");
+}
+@font-face {
+	font-family: "Wozos Wizard Writing";
+	src: url("../fonts/WozosWizardWriting.ttf");
+}
+
+/*========================================================================================================================
+==========================================================================================================================
+  ___  ___  _____   __
+ | _ )/ _ \|   \ \ / /
+ | _ \ (_) | |) \ V / 
+ |___/\___/|___/ |_|  
+--------------------------------------------*/
+body {
+	padding: 0;
+	margin: 0;
+	overflow-x: hidden;
+
+	background-color: #42334d;
+	background-image: linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0)), linear-gradient(to right, #1c1719, rgba(0,0,0,0), rgba(0,0,0,0), rgba(0,0,0,0), #1c1719), url("../images/starsBlack.png");
+	background-repeat: no-repeat, repeat, repeat;
+	background-position: top left, top left;
+
+	scrollbar-color: rgba(255,200,134,0.6) rgba(0,0,0,0.5);
+}
+
+/*========================================================================================================================
+==========================================================================================================================
+  ___  _   ___    _   _    _      _   __  __
+ | _ \/_\ | _ \  /_\ | |  | |    /_\  \ \/ /
+ |  _/ _ \|   / / _ \| |__| |__ / _ \  >  < 
+ |_|/_/ \_\_|_\/_/ \_\____|____/_/ \_\/_/\_\
+--------------------------------------------*/
+#wrapper { /*Container for parallax*/
+	position: relative;
+	height: 100vh;
+	perspective: 10px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.background1, .background2,.background2r, .foreground1, .foreground1r, .foreground2 {
+	position: absolute;
+	transform-style: preserve-3d;
+}
+
+/* Background ============================================================*/
+.background1 {
+	left: 50%;
+	z-index: -10;
+	transform: translateX(-50%) translateY(-38%) translateZ(-5px) scale(1.5);
+}
+.background2 {
+	left: 25%;
+	z-index: -20;
+	transform: translateX(-225%) translateY(-31%) scale(2) translateZ(-10px);
+}
+.background2r {
+	right: 25%;
+	z-index: -20;
+	transform: translateX(225%) translateY(-31%) scale(2) translateZ(-10px);
+}
+
+/* Foreground ============================================================*/
+.foreground1 {
+	left: 50%;
+	z-index: 10;
+	transform: translateX(-93%) translateY(23%) translateZ(5px) scale(0.5);
+}
+.foreground1r {
+	right: 50%;
+	z-index: 10;
+	transform: translateX(93%) translateY(23%) translateZ(5px) scale(0.5);
+}
+.foreground2 {
+	z-index: 20;
+	transform: translateZ(3px) scale(0.3);
+}
+
+/*========================================================================================================================
+==========================================================================================================================
+  ___ ___ _    ___ _____ ___ 
+ / __| _ \ |  |_ _|_   _/ __|
+ \__ \  _/ |__ | |  | | \__ \
+ |___/_| |____|___| |_| |___/
+--------------------------------------------*/
+.clear {
+	clear: both;
+}
+.split10, .split20, .split30, .split40, .split50, .split60, .split70, .split80, .split90 {
+	float: left;
+	margin: 0px;
+	padding: 0px;
+}
+
+/* Split 10s ================================================================*/
+.split10 { width: 10%; } /*Tenths*/
+.split20 { width: 20%; } /*Fifths*/
+.split30 { width: 30%; }
+.split40 { width: 40%; }
+.split50 { width: 50%; } /*Halves*/
+.split60 { width: 60%; }
+.split70 { width: 70%; }
+.split80 { width: 80%; }
+.split90 { width: 90%; }
+
+/* Split fractions ================================================================*/
+.split25 { width: 25%; } /*Quarters*/
+.split33 { width: 33%; } /*Thirds*/
+
+/*========================================================================================================================
+==========================================================================================================================
+  _  _ ___   _   ___  ___ ___ 
+ | || | __| /_\ |   \| __| _ \
+ | __ | _| / _ \| |) | _||   /
+ |_||_|___/_/ \_\___/|___|_|_\
+--------------------------------------------*/
+header {
+	width: 100%;
+	height: 380px;
+	transform-style: preserve-3d;
+
+	justify-content: center;
+	align-items: center;
+}
+
+#wozo {
+	display: block;
+	margin: auto;
+	position: absolute;
+	left: 50%;
+	top: -150px;
+  	transform: translate(-50%);
+	pointer-events: none
+}
+
+#sign {
+	width: 250px;
+	position: absolute;
+	left: 10%;
+	top: -80px;
+	pointer-events: none;
+	z-index: 2;
+}
+
+/*========================================================================================================================
+==========================================================================================================================
+  _  _   ___   __
+ | \| | /_\ \ / /
+ | .` |/ _ \ V / 
+ |_|\_/_/ \_\_/  
+--------------------------------------------*/
+nav {
+	display: block;
+	position: sticky;
+	top: -155px;
+	z-index: 1;
+
+	height: 303px;
+	width: 100%;
+	max-width: 700px;
+
+	margin: -200px auto auto auto;
+	padding: 0px;
+
+	background-image: url("../images/tableMiddle.png");
+	background-repeat: repeat; 
+	background-size: 160px 303px;
+}
+
+/* Nav button ================================================================*/
+nav a {
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 150px;
+
+	padding-top: 14px;
+
+	align-content: center;
+	cursor: pointer;
+	user-select: none;
+
+	background-image: url("../images/navShadow.png");
+	background-size: 150px 150px;
+	background-position: left 15px;
+	background-repeat: no-repeat;
+}
+
+/* Glow ================================================================*/
+nav a::before {
+	z-index: 0;
+	position: absolute;
+	content:"";
+	background-image: url("../images/glowCircle.png");
+	background-size: 150px 150px;
+	opacity: 0;
+	display:block;
+	width: 150px;
+	height: 150px;
+	margin: auto auto auto auto;
+	transition-duration: 0.3s;
+}
+	nav a:hover::before {
+		opacity: 1;
+		transition-duration: 0.3s;
+	}
+	nav a:active::before {
+	}
+nav a::after {
+	clear: both;
+}
+
+/* Image ================================================================*/
+nav a img {
+	position: absolute;
+	z-index: 1;
+	width: 150px;
+	max-height: 150px;
+	top: 0px;
+	left: 0px;
+
+	margin: auto auto auto auto;
+
+	transition-duration: 0.3s;
+}
+	nav a:hover img {
+		top: -10px;
+		background-position: center 10px;
+		transition-duration: 0.3s;
+	}
+	nav a:active img {
+		top: 0px;
+		background-position: center 0px;
+	}
+
+/* Text ================================================================*/
+nav a h2 {
+	font-family: "Black Chancery";
+	font-size: 45px;
+	font-weight: bold;
+	text-align: left;
+	color: #CBCBCB;
+	text-shadow: 0px 2px 0px #333333, 0px -1px 0px #ffffff, 0px 4px 4px #000000;
+	transition-duration: 0.3s;
+	padding: 20px 0px 20px 0px;
+	margin: 15px auto auto auto;
+	border-radius: 30px;
+	background-position: center;
+	left: 150px;
+	position: absolute;
+	/*box-shadow: 0px 0px 15px 0px rgba(209,82,255,0.4), inset 0px 0px 15px 0px rgba(0,0,0,0.6);*/
+}
+	nav a:hover h2 {
+		color: #FFC886;
+		text-shadow: 0px 0px 10px #C86C00;
+		background-color: rgba(77, 40, 0, 0.5);
+		box-shadow: 0px 0px 30px 0px #ff941a, inset 0px 0px 15px 0px #b35f00;
+		background-image: url("../images/starsOrange.png");
+		background-size: 68px 68px;
+	}
+	nav a:active h2 {
+		color: white;
+		background-size: 60px 60px;
+	}
+
+/*========================================================================================================================
+==========================================================================================================================
+  __  __   _   ___ _  _ 
+ |  \/  | /_\ |_ _| \| |
+ | |\/| |/ _ \ | || .` |
+ |_|  |_/_/ \_\___|_|\_|
+--------------------------------------------*/
+main {
+	position: relative;
+	z-index: 0;
+
+	width: 100%;
+	height: auto;
+
+	margin:-45px auto auto auto;
+	padding: 40px 10px 10px 10px;
+
+	background-image: url(../images/clothMiddle.png);
+	box-shadow: 0px 0px 120px 0px rgba(0,0,0,1);
+
+	overflow: visible;
+}
+
+/* Border images ================================================================*/
+main .border {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	overflow: visible;
+	pointer-events: none;
+}
+main .border .topLeft {
+	position: absolute;
+	left: -50px;
+	width: 50px;
+	height: 50px;
+	background-image: url(../images/clothTopLeft.png);
+}
+main .border .topMiddle {
+	position: absolute;
+	width: 100%;
+	height: 50px;
+	background-image: url(../images/clothTopMiddle.png);
+}
+main .border .topRight {
+	position: absolute;
+	right: -50px;
+	width: 50px;
+	height: 50px;
+	background-image: url(../images/clothTopRight.png);
+}
+main .border .left {
+	position: absolute;
+	left: -50px;
+	top: 50px;
+	width: 50px;
+	height: calc(100% - 50px);
+	background-image: url(../images/clothLeft.png);
+}
+main .border .right {
+	position: absolute;
+	right: -50px;
+	top: 50px;
+	width: 50px;
+	height: calc(100% - 50px);
+	background-image: url(../images/clothRight.png);
+}
+main .border .bottomLeft {
+	position: absolute;
+	left: -50px;
+	bottom: -50px;
+	width: 50px;
+	height: 50px;
+	background-image: url(../images/clothBottomLeft.png);
+}
+main .border .bottomMiddle {
+	position: absolute;
+	bottom: -50px;
+	width: 100%;
+	height: 50px;
+	background-image: url(../images/clothBottomMiddle.png);
+}
+main .border .bottomRight {
+	position: absolute;
+	right: -50px;
+	bottom: -50px;
+	width: 50px;
+	height: 50px;
+	background-image: url(../images/clothBottomRight.png);
+}
+
+/* Horizontal splitter ================================================================*/
+hr {
+	border:none;
+	height:4px;
+	background: linear-gradient(90deg, rgba(209,82,255,0) 0%, rgba(209,82,255,0.8) 50%, rgba(209,82,255,0) 100%);
+	border-radius: 2px;
+	overflow: visible;
+	margin: 30px 0px 30px 0px;
+}
+	hr::after { /*Image*/
+		content:"";
+		display:block;
+		position: relative;
+		height: 30px;
+		background-image: url("../images/seperator.png");
+		background-repeat: no-repeat;
+		background-position: center;
+		top: -13px;
+	}
+
+/*========================================================================================================================
+==========================================================================================================================
+  ___ ___   _   ___  ___ _  _ 
+ / __| __| /_\ | _ \/ __| || |
+ \__ \ _| / _ \|   / (__| __ |
+ |___/___/_/ \_\_|_\\___|_||_|
+--------------------------------------------*/
+/* Search div ================================================================*/
+#search {
+	background-image: url("../images/book.png");
+	background-size: 200px 200px;
+	background-repeat: no-repeat;
+	background-position: center;
+	height: 160px;
+	width: auto;
+	max-width: 500px;
+	margin: auto;
+}
+
+/* Form inside div ============================================================*/
+#search form {
+	margin: auto;
+	align-self: center;
+	height: 60px;
+	width: 100%;
+	background-color: rgba(19,0,34,0.4);
+	border-radius: 40px;
+	position: relative;
+	top: 40px;
+	transition-duration: 0.3s;
+	background-image: url("../images/starsPurple.png");
+	background-size: 64px 64px;
+	background-position: center;
+	box-shadow: 0px 0px 5px 0px rgba(209,82,255,0.5);
+}
+	#search form:hover {
+		background-color: rgba(19,0,34,0.6);
+		box-shadow: 0px 0px 15px 0px rgba(209,82,255,1);
+	}
+	#search form:has(> #query:focus) { /*When the text box is focused*/
+		background-color: rgba(19,0,34,0.6);
+		box-shadow: 0px 0px 15px 0px rgba(209,82,255,1);
+	}
+	#search form:has(> #submit:hover) { /*When the magnifying glass button is hovered*/
+		background-color: rgba(77, 40, 0, 0.5);
+		box-shadow: 0px 0px 30px 0px #ff941a, inset 0px 0px 15px 0px #b35f00;
+		background-image: url("../images/starsOrange.png");
+		background-size: 68px 68px;
+	}
+
+/* Query text box ============================================================*/
+#search #query {
+	color: rgba(255,255,255,0.5);
+	text-shadow: 0px 0px 8px rgba(0,0,0,1);
+	background: none;
+	border: none;
+	font-size: 25px;
+	height: 60px;
+	padding: 0px 0px 0px 20px;
+	width: calc(100% - 145px);
+	font-family: 'Garamond';
+}
+	#search #query:focus { /*When focused*/
+		outline: none;
+		color: rgba(255,255,255,1);
+	}
+
+/* Magnifying glass submit button ============================================*/
+#search #submit {
+	color: rgba(77, 40, 0, 0);
+	background-color: rgba(209,82,255,0);
+	background-image: url(../images/mag.png);
+	background-size: 100% 100%;
+	background-position:center;
+	border: none;
+	font-size: 20px;
+	font-weight: bold;
+	font-family: 'Black Chancery';
+	transition-duration: 0.3s;
+	height: 120px;
+	width: 120px;
+	float:right;
+	position: relative;
+	left: 0px;
+	top: -30px;
+	border-radius: 60px;
+	cursor: pointer;
+	font-size: 50px;
+}
+	#search #submit:hover {
+		background-size: 110% 110%;
+		/*box-shadow: 0px 0px 10px 0px #ff941a, inset 0px 0px 2px 0px #b35f00;*/
+		color: rgba(33, 10, 0, 1);
+		text-shadow: 0px 0px 20px #ff941a;
+	}
+	#search #submit:active {
+		background-size: 90% 90%;
+	}
+
+/* Clear button ==============================================================*/
+#search #clear {
+	display: block;
+	position: relative;
+	color: rgba(255,255,255,0.3);
+	background: none;
+	border: none;
+	transition-duration: 0.3s;
+	font-size: 25px;
+	font-family: 'Garamond';
+	padding: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-top: 5px;
+	border-radius: 35px;
+	text-align: center;
+	cursor: pointer;
+	background-color: rgba(19,0,34,0.4);
+	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5), 0px 0px 1px 0px rgba(255,255,255,0.3);
+	left: 30px;
+}
+	#search form:has(> #query[value="a"]) #clear { /*When the query text box is not empty, show the clear button more*/
+		color: white;
+	}
+	#search #clear:hover { /*On hover*/
+		color: #FFC886;
+		box-shadow: 0px 0px 10px 0px #ff941a, inset 0px 0px 5px 0px #b35f00;
+		background-color: rgba(77, 40, 0, 0.5);
+		text-shadow: 0px 0px 20px #ff941a;
+	}
+	#search #clear:active { /*On click*/
+		color: white;
+		box-shadow: 0px 0px 20px 0px #ff941a, inset 0px 0px 10px 0px #b35f00;
+		margin-top: 0px;
+	}
+
+/*========================================================================================================================
+==========================================================================================================================
+  _____ _____  _______ 
+ |_   _| __\ \/ /_   _|
+   | | | _| >  <  | |  
+   |_| |___/_/\_\ |_|  
+--------------------------------------------*/
+
+/* Headings ==============================================================*/
+h1 {
+	font-family: "Black Chancery";
+	font-size: 50px;
+	font-weight: bold;
+	text-align: center;
+	color: #CBCBCB;
+	text-shadow: 0px 2px 0px #333333, 0px -1px 0px #ffffff;
+	margin: 0px;
+	padding: 10px;
+}
+	h1::before { /*Decoration*/
+		font-family: 'Monospace';
+		content: "✧✦";
+		color: rgba(150, 16, 222, 0.7);
+		text-shadow: none;
+		font-size: 30px;
+		margin-left: -100px;
+	}
+	h1::after { /*Decoration*/
+		font-family: 'Monospace';
+		content: "✦✧";
+		color: rgba(150, 16, 222, 0.7);
+		text-shadow: none;
+		font-size: 30px;
+		margin-right: -100px;
+	}
+
+h2 {
+	font-family: "Black Chancery";
+	font-size: 40px;
+	font-weight: bold;
+	text-align: center;
+	color: #CBCBCB;
+	text-shadow: 0px 2px 0px #333333, 0px -1px 0px #ffffff;
+	padding: 10px;
+	margin: 0px;
+}
+
+h3 {
+	font-family: "Garamond";
+	font-size: 26px;
+	font-weight: bold;
+	text-align: left;
+	color: #CBCBCB;
+	text-shadow: 0px 2px 0px #333333, 0px -1px 0px #ffffff;
+}
+
+h4 {
+	color: #b3b3b3;
+	font-size: 23px;
+	font-weight: bold;
+	font-family: 'Garamond';
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+
+/* Body text ==============================================================*/
+p {
+	color: #b3b3b3;
+	font-size: 23px;
+	font-family: 'Garamond';
+	padding: 20px;
+	margin: 0px;
+}
+
+/*========================================================================================================================
+==========================================================================================================================
+   ___ ___  _  _ _____ ___ _  _ _____ 
+  / __/ _ \| \| |_   _| __| \| |_   _|
+ | (_| (_) | .` | | | | _|| .` | | |  
+  \___\___/|_|\_| |_| |___|_|\_| |_|  
+--------------------------------------------*/
+main img {
+	padding: 10px;
+	max-width: calc(100% - 20px);
+	margin: auto;
+	text-align: center;
+}
+
+section {
+	border-radius: 30px;
+	background-color: rgba(0,0,0,0.2);
+	margin: 20px 0px 20px 0px;
+	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5), 0px 0px 1px 0px rgba(255,255,255,0.3);
+}
+
+details {
+	transition-duration: 0.3s;
+	cursor: pointer;
+	font-family: "Garamond";
+	font-size: 26px;
+	font-weight: bold;
+	text-align: left;
+	color: #CBCBCB;
+	border-radius: 20px;
+	background-color: rgba(0,0,0,0.3);
+}
+
+summary {
+	transition-duration: 0.3s;
+}
+
+/* Section link ==============================================================*/
+.sectionLink {
+	border-radius: 90px;
+	background-color: rgba(0,0,0,0.2);
+	background-image: url("../images/starsPurple.png");
+	background-size: 64px 64px;
+	background-position: center;
+	height: 80px;
+	padding: 0px;
+	margin: 40px auto 40px auto;
+	transition-duration: 0.3s;
+	cursor: pointer;
+	box-shadow: 0px 0px 15px 0px rgba(209,82,255,0.4), inset 0px 0px 15px 0px rgba(0,0,0,0.6);
+}
+	.sectionLink::after { /*Clear float*/
+		content: "";
+		clear:both;
+		display: block;
+	}
+	.sectionLink:hover {
+		background-color: rgba(77, 40, 0, 0.5);
+		box-shadow: 0px 0px 30px 0px #ff941a, inset 0px 0px 15px 0px #b35f00;
+		background-image: url("../images/starsOrange.png");
+		background-size: 68px 68px;
+	}
+	.sectionLink:active {
+		background-size: 64px 64px;
+	}
+
+.sectionLink img { /*Image*/
+	height: 120px;
+	margin: -20px 0px -20px 0px;
+	padding: 0px;
+	float: left;
+	margin-left: 20px;
+	user-select: none;
+	pointer-events: none;
+	transition-duration: 0.3s;
+}
+	.sectionLink:hover img { /*Raise up on hover*/
+		margin-top: -30px;
+	}
+	.sectionLink:active img { /*Go back down on click*/
+		margin-top: -20px;
+	}
+
+.sectionLink h1 { /*Text*/
+	transition-duration: 0.3s;
+	margin: 15px 0px 0px 0px;
+	padding: 0px;
+	float: left;
+	width: calc(100% - 200px);
+	user-select: none;
+	pointer-events: none;
+	font-size: 40px;
+}
+	.sectionLink:hover h1 {
+		color: #FFC886;
+		text-shadow: 0px 0px 6px #C86C00;
+	}
+	.sectionLink h1::before, .sectionLink h1::after {
+		transition-duration: 0.3s;
+	}
+	.sectionLink:hover h1::before, .sectionLink:hover h1::after { /*Change text decoration on hover*/
+		color: rgba(255, 148, 26, 0.5);
+	}
+	.sectionLink:active h1 {
+		color: white;
+	}
+
+/* Item ==============================================================*/
+.item {
+	border-radius: 10px;
+	background-color: rgba(0,0,0,0.2);
+	background-image: url("../images/starsPurple.png");
+	background-size: 64px 64px;
+	background-position: center;
+	padding: 0px;
+	margin: 40px auto 40px auto;
+	transition-duration: 0.3s;
+	cursor: pointer;
+	box-shadow: 0px 0px 15px 0px rgba(209,82,255,0.4);
+	width: 95%;
+}
+	.item:hover {
+		background-color: rgba(77, 40, 0, 0.5);
+		box-shadow: 0px 0px 30px 0px #ff941a, inset 0px 0px 15px 0px #b35f00;
+		background-image: url("../images/starsOrange.png");
+		background-size: 68px 68px;
+	}
+	.item:active {
+		background-size: 64px 64px;
+	}
+
+.item img {
+
+}
+
+.item h2 {
+	
+}
+
+/*========================================================================================================================
+==========================================================================================================================
+  ___ ___   ___ _____ ___ ___ 
+ | __/ _ \ / _ \_   _| __| _ \
+ | _| (_) | (_) || | | _||   /
+ |_| \___/ \___/ |_| |___|_|_\
+--------------------------------------------*/
+footer {
+	height: 280px;
+	width: 100%;
+	background-color: black;
+	background-image: url("../images/footer.png");
+	background-size: 100% 64%;
+	background-repeat: repeat-x;
+}
+
+footer #footerWrapper { /*Wrapper*/
+	width: 85%;
+	max-width: 720px;
+	margin:auto;
+	top: 80px;
+	position: relative;
+}
+
+footer #stamp { /*Stamp image*/
+	width: 180px;
+	height: 180px;
+	float: left;
+}
+
+footer p { /*Text*/
+	padding: 0px;
+	font-family: "Wozos Wizard Writing";
+	font-size: 30px;
+	text-align: center;
+	float: right;
+	height: 100%;
+	color: #593940;
+	position: relative;
+	top: 30px;
+	text-shadow: 0px 1px 0px #875761, 0px -1px 0px #000;
+	width: calc(100% - 200px);
+}
