@@ -181,9 +181,10 @@ nav {
 /* Nav button ================================================================*/
 nav a {
 	display: block;
+	float: left;
 	position: relative;
-	width: 100%;
-	height: 150px;
+
+	width: 25%;
 
 	padding-top: 14px;
 
@@ -193,8 +194,12 @@ nav a {
 
 	background-image: url("../images/navShadow.png");
 	background-size: 150px 150px;
-	background-position: left 15px;
+	background-position: center 15px;
 	background-repeat: no-repeat;
+
+	text-decoration: none;
+
+	/*box-shadow: inset 0px 0px 3px #000;*/
 }
 
 /* Glow ================================================================*/
@@ -203,10 +208,10 @@ nav a::before {
 	position: absolute;
 	content:"";
 	background-image: url("../images/glowCircle.png");
-	background-size: 150px 150px;
+	background-size: 100% 150px;
 	opacity: 0;
 	display:block;
-	width: 150px;
+	width: 100%;
 	height: 150px;
 	margin: auto auto auto auto;
 	transition-duration: 0.3s;
@@ -223,14 +228,14 @@ nav a::after {
 
 /* Image ================================================================*/
 nav a img {
-	position: absolute;
+	position: relative;
 	z-index: 1;
 	width: 150px;
 	max-height: 150px;
 	top: 0px;
-	left: 0px;
+	float: none;
 
-	margin: auto auto auto auto;
+	margin: auto auto auto calc(50% - 75px);
 
 	transition-duration: 0.3s;
 }
@@ -247,20 +252,25 @@ nav a img {
 /* Text ================================================================*/
 nav a h2 {
 	font-family: "Black Chancery";
-	font-size: 45px;
+	font-size: 30px;
 	font-weight: bold;
-	text-align: left;
+	text-align: center;
 	color: #CBCBCB;
 	text-shadow: 0px 2px 0px #333333, 0px -1px 0px #ffffff, 0px 4px 4px #000000;
 	transition-duration: 0.3s;
-	padding: 20px 0px 20px 0px;
+	padding: 0px;
 	margin: 15px auto auto auto;
 	border-radius: 30px;
 	background-position: center;
-	left: 150px;
-	position: absolute;
+	left: auto;
+	position: relative;
+	float: none;
 	/*box-shadow: 0px 0px 15px 0px rgba(209,82,255,0.4), inset 0px 0px 15px 0px rgba(0,0,0,0.6);*/
 }
+	nav a.selected h2 {
+		box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.7), 0px 0px 1px 0px rgba(255,255,255,0.5);
+		background-color: rgba(0,0,0,0.3);
+	}
 	nav a:hover h2 {
 		color: #FFC886;
 		text-shadow: 0px 0px 10px #C86C00;
@@ -273,7 +283,6 @@ nav a h2 {
 		color: white;
 		background-size: 60px 60px;
 	}
-
 /*========================================================================================================================
 ==========================================================================================================================
   __  __   _   ___ _  _ 
@@ -537,7 +546,7 @@ h1 {
 	font-weight: bold;
 	text-align: center;
 	color: #CBCBCB;
-	text-shadow: 0px 2px 0px #333333, 0px -1px 0px #ffffff;
+	text-shadow: 0px 5px 10px rgba(0,0,0,0.5), 0px 2px 0px #666, 0px -1px 0px #ffffff;
 	margin: 0px;
 	padding: 10px;
 }
@@ -576,6 +585,8 @@ h3 {
 	text-align: left;
 	color: #CBCBCB;
 	text-shadow: 0px 2px 0px #333333, 0px -1px 0px #ffffff;
+	margin: 5px;
+	padding: 0px;
 }
 
 h4 {
@@ -583,8 +594,8 @@ h4 {
 	font-size: 23px;
 	font-weight: bold;
 	font-family: 'Garamond';
-	margin-bottom: 0px;
-	padding-bottom: 0px;
+	margin: 5px;
+	padding: 0px;
 }
 
 /* Body text ==============================================================*/
@@ -595,6 +606,48 @@ p {
 	padding: 20px;
 	margin: 0px;
 }
+
+/*========================================================================================================================
+==========================================================================================================================
+  _____ _   ___ _    ___ 
+ |_   _/_\ | _ ) |  | __|
+   | |/ _ \| _ \ |__| _| 
+   |_/_/ \_\___/____|___|
+--------------------------------------------*/
+table { /*Entire table ------------------*/
+	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.7), 0px 0px 1px 0px rgba(255,255,255,0.5);
+	background-color: rgba(0,0,0,0.1);
+	margin: auto;
+	font-family: 'Garamond';
+	color: #b3b3b3;
+	font-size: 23px;
+}
+caption { /*Header for table ------------------*/
+	font-weight: bold;
+}
+thead { /*Column header ------------------*/
+	
+}
+	th { /*Column header entry*/
+		color: #ff941a;
+		font-weight: bold;
+		border-bottom: 1px solid rgba(179,179,179,0.5);
+	}
+tbody { /*Table body ------------------*/
+
+}
+	tr { /*Row*/
+
+	}
+		td { /*Row entry*/
+			border-right: 1px solid rgba(179,179,179,0.5);
+		}
+tfoot { /*Column footer ------------------*/
+
+}
+
+
+/* Headings ==============================================================*/
 
 /*========================================================================================================================
 ==========================================================================================================================
@@ -614,6 +667,7 @@ section {
 	border-radius: 30px;
 	background-color: rgba(0,0,0,0.2);
 	margin: 20px 0px 20px 0px;
+	padding: 5px;
 	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5), 0px 0px 1px 0px rgba(255,255,255,0.3);
 }
 
@@ -627,6 +681,7 @@ details {
 	color: #CBCBCB;
 	border-radius: 20px;
 	background-color: rgba(0,0,0,0.3);
+	margin: 5px 0px 5px 0px;
 }
 
 summary {

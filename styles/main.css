@@ -63,116 +63,52 @@ header {
  |_|\_/_/ \_\_/  
 --------------------------------------------*/
 nav {
-	display: block;
-	position: sticky;
-	top: -155px;
-	z-index: 1;
-
-	height: 303px;
 	width: 90%;
-	max-width: 700px;
-
-	margin: -200px auto auto auto;
-	padding: 0px;
-
-	background-image: url("../images/tableMiddle.png");
-	background-repeat: repeat; 
-	background-size: 160px 303px;
 }
 
 /* Nav button ================================================================*/
 nav a {
-	display: block;
-	float: left;
-	position: relative;
 
-	width: 25%;
-
-	padding-top: 14px;
-
-	align-content: center;
-	cursor: pointer;
-	user-select: none;
-
-	background-image: url("../images/navShadow.png");
-	background-size: 150px 150px;
-	background-position: center 15px;
-	background-repeat: no-repeat;
-
-	/*box-shadow: inset 0px 0px 3px #000;*/
 }
 
 /* Glow ================================================================*/
 nav a::before {
-	z-index: 0;
-	position: relative;
-	content:"";
-	background-image: url("../images/glowCircle.png");
-	background-size: 150px 150px;
-	opacity: 0;
-	display:block;
-	width: 150px;
-	height: 150px;
 	margin: auto auto -150px auto;
-	transition-duration: 0.3s;
 }
 	nav a:hover::before {
-		opacity: 1;
-		transition-duration: 0.3s;
+		
 	}
 	nav a:active::before {
+
 	}
+nav a::after {
+	
+}
+
 
 /* Image ================================================================*/
 nav a img {
-	position: relative;
-	z-index: 1;
-	width: 150px;
-	max-height: 150px;
-	top: 0px;
-
-	margin: auto auto auto calc(50% - 75px);
-
-	transition-duration: 0.3s;
+	
 }
 	nav a:hover img {
-		top: -10px;
-		background-position: center 10px;
-		transition-duration: 0.3s;
+		
 	}
 	nav a:active img {
-		top: 0px;
-		background-position: center 0px;
+		
 	}
 
 /* Text ================================================================*/
 nav a h2 {
-	font-family: "Black Chancery";
 	font-size: 40px;
-	font-weight: bold;
-	text-align: center;
-	color: #CBCBCB;
-	text-shadow: 0px 2px 0px #333333, 0px -1px 0px #ffffff, 0px 4px 4px #000000;
-	transition-duration: 0.3s;
-	padding: 0px;
-	margin: 15px auto auto auto;
-	border-radius: 30px;
-	background-position: center;
-	left: auto;
-	position: relative;
-	/*box-shadow: 0px 0px 15px 0px rgba(209,82,255,0.4), inset 0px 0px 15px 0px rgba(0,0,0,0.6);*/
 }
+	nav a.selected h2 {
+		
+	}
 	nav a:hover h2 {
-		color: #FFC886;
-		text-shadow: 0px 0px 10px #C86C00;
-		background-color: rgba(77, 40, 0, 0.5);
-		box-shadow: 0px 0px 30px 0px #ff941a, inset 0px 0px 15px 0px #b35f00;
-		background-image: url("../images/starsOrange.png");
-		background-size: 68px 68px;
+		
 	}
 	nav a:active h2 {
-		color: white;
-		background-size: 60px 60px;
+		
 	}
 
 /*========================================================================================================================
@@ -291,6 +227,38 @@ h4 {
 /* Body text ==============================================================*/
 p {
 	
+}
+
+/*========================================================================================================================
+==========================================================================================================================
+  _____ _   ___ _    ___ 
+ |_   _/_\ | _ ) |  | __|
+   | |/ _ \| _ \ |__| _| 
+   |_/_/ \_\___/____|___|
+--------------------------------------------*/
+table { /*Entire table ------------------*/
+
+}
+caption { /*Header for table ------------------*/
+
+}
+thead { /*Column header ------------------*/
+
+}
+	th { /*Column header entry*/
+
+	}
+tbody { /*Table body ------------------*/
+
+}
+	tr { /*Row*/
+
+	}
+		td { /*Row entry*/
+
+		}
+tfoot { /*Column footer ------------------*/
+
 }
 
 /*========================================================================================================================
