@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="style.css?v=1">
+</head>
+<script>
+
+/* //Map array
+[
+[{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},...],
+[{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},...],
+[{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},...],
+[{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},...],
+[{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},...],
+[{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},...],
+[{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},{id:0, shade:0},...]
+...
+...
+]
+*/
+var array_map = [];
+
+//Block file names CSV. Just paste the CSV here then replace each newline with ';'
+var csv_blocks = "grass_block_side,slime_block,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;sand,sandstone,sandstone_stairs,sandstone_slab,cut_sandstone,chiseled_sandstone,birch_log_top,birch_planks,birch_planks_stairs,birch_planks_slab,birch_door_top,birch_fence,birch_fence_gate,mushroom_block_inside,bone_block_top,glowstone,end_stone,end_stone_bricks,,,,,,,,,,,,,,,,,,,;mushroom_stem,cobweb,black_bed_head,blue_bed_head,brown_bed_head,cyan_bed_head,gray_bed_head,green_bed_head,light_blue_bed_head,light_gray_bed_head,lime_bed_head,magenta_bed_head,orange_bed_head,pink_bed_head,purple_bed_head,red_bed_head,white_bed_head,yellow_bed_head,,,,,,,,,,,,,,,,,,,;tnt_top,redstone_block,lava_still,fire_0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;ice,frosted_ice_0,packed_ice,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;iron_block,iron_pressure_plate,iron_door_top,iron_trapdoor,iron_bars,anvil_top,brewing_stand,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;oak_leaves,oak_sapling,tall_grass_top,poppy,lily_pad,wheat_stage7,carrots_stage3,potatoes_stage3,beetroots_stage3,sugar_cane,pumpkin_stem,melon_stem,cactus_side,vine,cocoa_stage2,red_mushroom,,,,,,,,,,,,,,,,,,,,,;white_wool,white_wool_carpet,snow,snow_layer,white_stained_glass,white_stained_glass_pane,white_bed_foot,white_glazed_terracotta,white_concrete,white_concrete_powder,,,,,,,,,,,,,,,,,,,,,,,,,,,;clay,infested_stone,infested_cobblestone,infested_stone_bricks,infested_mossy_stone_bricks,infested_cracked_stone_bricks,infested_chiseled_stone_bricks,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;dirt,coarse_dirt,farmland,grass_path_side,jungle_log_top,jungle_planks,jungle_planks_stairs,jungle_planks_slab,jungle_door_top,jungle_fence,jungle_fence_gate,brown_mushroom_block,jukebox_top,granite,polished_granite,,,,,,,,,,,,,,,,,,,,,,;cobblestone,cobblestone_stairs,cobblestone_slab,cobblestone_wall,mossy_cobblestone,mossy_cobblestone_wall,stone,stone_slab,stone_bricks,stone_bricks_stairs,stone_bricks_slab,cracked_stone_bricks,chiseled_stone_bricks,mossy_stone_bricks,gravel,andesite,polished_andesite,coal_ore,iron_ore,gold_ore,redstone_ore,lapis_ore,diamond_ore,emerald_ore,bedrock,furnace_front,dispenser_front,dropper_front,hopper,observer_front,acacia_log,stone_pressure_plate,cauldron_side,piston_top,piston_top_sticky,ender_chest,spawner;water,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;oak_log_top,oak_planks,oak_planks_stairs,oak_planks_slab,oak_door_top,oak_fence,oak_fence_gate,wooden_pressure_plate,crafting_table_front,bookshelf,note_block,dead_bush,oak_trapdoor,sign,chest,trapped_chest,banner,daylight_detector_top,,,,,,,,,,,,,,,,,,,;birch_log,diorite,polished_diorite,quartz_block_top,chiseled_quartz_block,quartz_pillar,quartz_block_stairs,quartz_block_slab,sea_lantern,,,,,,,,,,,,,,,,,,,,,,,,,,,,;acacia_log_top,acacia_planks,acacia_planks_stairs,acacia_planks_slab,pumpkin_side,jack_o_lantern,red_sand,red_sandstone,cut_red_sandstone,chiseled_red_sandstone,red_sandstone_stairs,red_sandstone_slab,terracotta,orange_wool,orange_wool_carpet,orange_stained_glass,orange_stained_glass_pane,orange_concrete,orange_concrete_powder,orange_glazed_terracotta,orange_bed_foot,,,,,,,,,,,,,,,,;purpur_block,purpur_pillar,purpur_block_stairs,purpur_block_slab,magenta_wool,magenta_wool_carpet,magenta_stained_glass,magenta_stained_glass_pane,magenta_concrete,magenta_concrete_powder,magenta_glazed_terracotta,magenta_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,;light_blue_wool,light_blue_wool_carpet,light_blue_stained_glass,light_blue_stained_glass_pane,light_blue_concrete,light_blue_concrete_powder,light_blue_glazed_terracotta,light_blue_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;hay_block_side,sponge,wet_sponge,yellow_wool,yellow_wool_carpet,yellow_stained_glass,yellow_stained_glass_pane,yellow_concrete,yellow_concrete_powder,yellow_glazed_terracotta,yellow_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,;melon_side,lime_wool,lime_wool_carpet,lime_stained_glass,lime_stained_glass_pane,lime_concrete,lime_concrete_powder,lime_glazed_terracotta,lime_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,;pink_wool,pink_wool_carpet,pink_stained_glass,pink_stained_glass_pane,pink_concrete,pink_concrete_powder,pink_glazed_terracotta,pink_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;gray_wool,gray_wool_carpet,gray_stained_glass,gray_stained_glass_pane,gray_concrete,gray_concrete_powder,gray_glazed_terracotta,gray_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;structure_block,light_gray_wool,light_gray_wool_carpet,light_gray_stained_glass,light_gray_stained_glass_pane,light_gray_concrete,light_gray_concrete_powder,light_gray_glazed_terracotta,light_gray_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,;prismarine,cyan_wool,cyan_wool_carpet,cyan_stained_glass,cyan_stained_glass_pane,cyan_concrete,cyan_concrete_powder,cyan_glazed_terracotta,cyan_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,;repeating_command_block_front,mycelium_side,purple_wool,purple_wool_carpet,purple_stained_glass,purple_stained_glass_pane,purple_concrete,purple_concrete_powder,purple_glazed_terracotta,purple_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,;blue_wool,blue_wool_carpet,blue_stained_glass,blue_stained_glass_pane,blue_concrete,blue_concrete_powder,blue_glazed_terracotta,blue_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;dark_oak_log_top,dark_oak_log,dark_oak_planks,dark_oak_planks_stairs,dark_oak_planks_slab,dark_oak_door_top,dark_oak_fence,dark_oak_fence_gate,spruce_log,command_block_front,soul_sand,brown_wool,brown_wool_carpet,brown_stained_glass,brown_stained_glass_pane,brown_concrete,brown_concrete_powder,brown_glazed_terracotta,brown_bed_foot,,,,,,,,,,,,,,,,,,;chain_command_block_front,end_portal_frame_top,green_wool,green_wool_carpet,green_stained_glass,green_stained_glass_pane,green_concrete,green_concrete_powder,green_glazed_terracotta,green_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,,,,;bricks,bricks_slab,bricks_stairs,nether_wart_block,nether_wart_stage2,enchanting_table_side,red_wool,red_wool_carpet,red_stained_glass,red_stained_glass_pane,red_concrete,red_concrete_powder,red_glazed_terracotta,red_bed_foot,,,,,,,,,,,,,,,,,,,,,,,;coal_block,obsidian,dragon_egg,end_gateway,end_portal,black_wool,black_wool_carpet,black_stained_glass,black_stained_glass_pane,black_concrete,black_concrete_powder,black_glazed_terracotta,black_bed_foot,,,,,,,,,,,,,,,,,,,,,,,,;gold_block,gold_pressure_plate,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;diamond_block,prismarine_bricks,dark_prismarine,beacon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;lapis_block,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;emerald_block,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;spruce_log_top,spruce_planks,spruce_planks_stairs,spruce_planks_slab,spruce_door_top,spruce_fence,spruce_fence_gate,oak_log,jungle_log,podzol_side,,,,,,,,,,,,,,,,,,,,,,,,,,,;netherrack,nether_bricks,nether_bricks_stairs,nether_bricks_fence,red_nether_bricks,nether_quartz_ore,magma,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;white_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;orange_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;magenta_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;light_blue_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;yellow_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;lime_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;pink_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;gray_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;light_gray_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;cyan_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;purple_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;blue_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;brown_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;green_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;red_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;black_terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
+
+
+//Block real names CSV
+var csv_blockLabels = "Grass block,Slime block,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Sand,Sandstone,Sandstone stairs,Sandstone slab,Cut Sandstone,Chiseled Sandstone,Birch Log top,Birch Wood Planks,Birch Wood stairs,Birch Wood slab,Birch Wood door,Birch Wood fence,Birch Wood fence gate,Mushroom block (spores facing up),Bone block,Glowstone,End Stone,End Stone Bricks,,,,,,,,,,,,,,,,,,,;Mushroom Stem (side up),Cobweb,Black Bed head,Blue Bed head,Brown Bed head,Cyan Bed head,Gray Bed head,Green Bed head,Light Blue Bed head,Light Gray Bed head,Lime Bed head,Magenta Bed head,Orange Bed head,Pink Bed head,Purple Bed head,Red Bed head,White Bed head,Yellow Bed head,,,,,,,,,,,,,,,,,,,;TNT,Redstone Block,Lava,Fire,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Ice,Frosted Ice (from ice boots),Packed Ice,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Iron Block,Iron Pressure Plate,Iron door,Iron trapdoor,Iron Bars,Anvil,Brewing Stand,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Any leaves,Any sapling,Tall Grass,Any Flower,Lily Pad,Wheat,Carrots,Potatoes,Beetroots,Sugar Cane,Pumpkin Stem,Melon Stem,Cactus,Vines,Cocoa Beans,Mushrooms,,,,,,,,,,,,,,,,,,,,,;White Wool,White Carpet,Snow Block,Snow layer,White Stained Glass,White Stained Glass Pane,White Bed Foot,White Glazed Terracotta,White Concrete,White Concrete Powder,,,,,,,,,,,,,,,,,,,,,,,,,,,;Clay,Infested Stone,Infested Cobblestone,Infested Stone Bricks,Infested Mossy Stone Bricks,Infested Cracked Stone Bricks,Infested Chiseled Stone Bricks,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Dirt,Coarse Dirt,Farmland,Path Block,Jungle Log Top,Jungle Wood Planks,Jungle Wood stairs,Jungle Wood slab,Jungle Wood door,Jungle Wood fence,Jungle Wood fence gate,Brown Mushroom Block,Jukebox,Granite,Polished Granite,,,,,,,,,,,,,,,,,,,,,,;Cobblestone,Cobblestone stairs,Cobblestone slab,Cobblestone Wall,Mossy Cobblestone,Mossy Cobblestone Wall,Stone,Stone slab,Stone Bricks,Stone Bricks stairs,Stone Bricks slab,Cracked Stone Bricks,Chiseled Stone Bricks,Mossy Stone Bricks,Gravel,Andesite,Polished Andesite,Coal Ore,Iron Ore,Gold Ore,Redstone Ore,Lapis Ore,Diamond Ore,Emerald Ore,Bedrock,Furnace,Dispenser,Dropper,Hopper,Observer,Acacia Log bark,Stone Pressure Plate,Cauldron,Piston,Sticky Piston,Ender Chest,Monster Spawner;Water,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Oak Log Top,Oak Wood Planks,Oak Wood stairs,Oak Wood slab,Oak Wood door,Oak Wood fence,Oak Wood fence gate,Wooden Pressure Plate,Crafting Table,Bookshelf,Note Block,Dead Bush,Any trapdoor,Any Sign,Chest,Trapped Chest,Banner,Daylight Detector,,,,,,,,,,,,,,,,,,,;Birch Log bark,Diorite,Polished Diorite,Quartz Block,Chiseled Quartz Block,Quartz Pillar Block,Quartz Block stairs,Quartz Block slab,Sea Lantern,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Acacia Log Top,Acacia Wood Planks,Acacia Wood stairs,Acacia Wood slab,Pumpkin,Jack-o-Lantern,Red Sand,Red Sandstone,Cut Red Sandstone,Chiseled Red Sandstone,Red Sandstone stairs,Red Sandstone slab,Terracotta,Orange Wool,Orange Carpet,Orange Stained Glass,Orange Stained Glass Pane,Orange Concrete,Orange Concrete Powder,Orange Glazed Terracotta,Orange Bed foot,,,,,,,,,,,,,,,,;Purpur Block,Purpur Pillar,Purpur Block stairs,Purpur block slab,Magenta Wool,Magenta Carpet,Magenta Stained Glass,Magenta Stained Glass Pane,Magenta Concrete,Magenta Concrete Powder,Magenta Glazed Terracotta,Magenta Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,;Light Blue Wool,Light Blue Carpet,Light Blue Stained Glass,Light Blue Stained Glass Pane,Light Blue Concrete,Light Blue Concrete Powder,Light Blue Glazed Terracotta,Light Blue Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Hay Block,Sponge,Wet Sponge,Yellow Wool,Yellow Carpet,Yellow Stained Glass,Yellow Stained Glass Pane,Yellow Concrete,Yellow Concrete Powder,Yellow Glazed Terracotta,Yellow Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,;Melon,Lime Wool,Lime Carpet,Lime Stained Glass,Lime Stained Glass Pane,Lime Concrete,Lime Concrete Powder,Lime Glazed Terracotta,Lime Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Pink Wool,Pink Carpet,Pink Stained Glass,Pink Stained Glass Pane,Pink Concrete,Pink Concrete Powder,Pink Glazed Terracotta,Pink Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Gray Wool,Gray Carpet,Gray Stained Glass,Gray Stained Glass Pane,Gray Concrete,Gray Concrete Powder,Gray Glazed Terracotta,Gray Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Structure Block,Light Gray Wool,Light Gray Carpet,Light Gray Stained Glass,Light Gray Stained Glass Pane,Light Gray Concrete,Light Gray Concrete Powder,Light Gray Glazed Terracotta,Light Gray Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Prismarine,Cyan Wool,Cyan Carpet,Cyan Stained Glass,Cyan Stained Glass Pane,Cyan Concrete,Cyan Concrete Powder,Cyan Glazed Terracotta,Cyan Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Repeating Command Block,Mycelium,Purple Wool,Purple Carpet,Purple Stained Glass,Purple Stained Glass Pane,Purple Concrete,Purple Concrete Powder,Purple Glazed Terracotta,Purple Bed Foot,,,,,,,,,,,,,,,,,,,,,,,,,,,;Blue Wool,Blue Carpet,Blue Stained Glass,Blue Stained Glass Pane,Blue Concrete,Blue Concrete Powder,Blue Glazed Terracotta,Blue Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Dark Oak Log top,Dark Oak Log bark,Dark Oak Wood Planks,Dark Oak Wood stairs,Dark Oak Wood slab,Dark Oak Wood door,Dark Oak Wood fence,Dark Oak Wood fence gate,Spruce Log bark,Command Block,Soul Sand,Brown Wool,Brown Carpet,Brown Stained Glass,Brown Stained Glass Pane,Brown Concrete,Brown Concrete Powder,Brown Glazed Terracotta,Brown Bed foot,,,,,,,,,,,,,,,,,,;Chain Command Block,End Portal Frame,Green Wool,Green Carpet,Green Stained Glass,Green Stained Glass Pane,Green Concrete,Green Concrete Powder,Green Glazed Terracotta,Green Bed foot,,,,,,,,,,,,,,,,,,,,,,,,,,,;Bricks,Bricks slab,Bricks stairs,Nether Wart Block,Nether Wart,Enchanting Table,Red Wool,Red Carpet,Red Stained Glass,Red Stained Glass Pane,Red Concrete,Red Concrete Powder,Red Glazed Terracotta,Red Bed foot,,,,,,,,,,,,,,,,,,,,,,,;Coal Block,Obsidian,Dragon Egg,End Gateway,End Portal,Black Wool,Black Carpet,Black Stained Glass,Black Stained Glass Pane,Black Concrete,Black Concrete Powder,Black Glazed Terracotta,Black Bed foot,,,,,,,,,,,,,,,,,,,,,,,,;Gold Block,Gold Pressure Plate,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Diamond Block,Prismarine Bricks,Dark Prismarine,Beacon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Lapis Lazuli Block,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Emeral Block,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Spruce Log top,Spruce Wood Planks,Spruce Wood stairs,Spruce Wood slab,Spruce Wood door,Spruce Wood fence,Spruce Wood fence gate,Oak Log bark,Jungle Log bark,Podzol,,,,,,,,,,,,,,,,,,,,,,,,,,,;Netherrack,Nether Bricks,Nether Bricks stairs,Nether Bricks slab,Red Nether Bricks,Nether Quartz Ore,Magma Block,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;White Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Orange Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Magenta  Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Light Blue Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Yellow Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Lime Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Pink Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Gray Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Light Gray Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Cyan Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Purple Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Blue Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Brown Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Green Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Red Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;Black Terracotta,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,";
+
+
+//Which block is selected for each colour?
+var array_selectedBlocksDefault = [0,
+0,0,0,1,0,
+4,0,3,0,0,
+2,0,3,1,4,
+5,1,4,2,1,
+1,2,2,3,1,
+4,3,7,6,1,
+1,0,0,3,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0,0,0,0,0,
+0]
+var array_selectedBlocks = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+var array_imageIDs = []; //The element IDs of each image
+
+var array_blockCount = []; //How many blocks are used
+
+var array_startingHeights = []; //The relative starting height for each column
+
+//Block data array
+var array_blockData = [
+{name:"UNKNOWN", blocks:["unknown"], labels:["Unknown"]},
+{name:"GRASS", blocks:[], labels:[]},
+{name:"SAND", blocks:[], labels:[]},
+{name:"CLOTH", blocks:[], labels:[]},
+{name:"TNT", blocks:[], labels:[]},
+{name:"ICE", blocks:[], labels:[]},
+{name:"IRON", blocks:[], labels:[]},
+{name:"FOLIAGE", blocks:[], labels:[]},
+{name:"SNOW", blocks:[], labels:[]},
+{name:"CLAY", blocks:[], labels:[]},
+{name:"DIRT", blocks:[], labels:[]},
+{name:"STONE", blocks:[], labels:[]},
+{name:"WATER", blocks:[], labels:[]},
+{name:"WOOD", blocks:[], labels:[]},
+{name:"QUARTZ", blocks:[], labels:[]},
+{name:"ADOBE", blocks:[], labels:[]},
+{name:"MAGENTA", blocks:[], labels:[]},
+{name:"LIGHT_BLUE", blocks:[], labels:[]},
+{name:"YELLOW", blocks:[], labels:[]},
+{name:"LIME", blocks:[], labels:[]},
+{name:"PINK", blocks:[], labels:[]},
+{name:"GRAY", blocks:[], labels:[]},
+{name:"SILVER", blocks:[], labels:[]},
+{name:"CYAN", blocks:[], labels:[]},
+{name:"PURPLE", blocks:[], labels:[]},
+{name:"BLUE", blocks:[], labels:[]},
+{name:"BROWN", blocks:[], labels:[]},
+{name:"GREEN", blocks:[], labels:[]},
+{name:"RED", blocks:[], labels:[]},
+{name:"BLACK", blocks:[], labels:[]},
+{name:"GOLD", blocks:[], labels:[]},
+{name:"DIAMOND", blocks:[], labels:[]},
+{name:"LAPIS", blocks:[], labels:[]},
+{name:"EMERALD", blocks:[], labels:[]},
+{name:"OBSIDIAN", blocks:[], labels:[]},
+{name:"NETHERRACK", blocks:[], labels:[]},
+{name:"WHITE_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"ORANGE_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"MAGENTA_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"LIGHT_BLUE_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"YELLOW_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"LIME_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"PINK_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"GRAY_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"SILVER_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"CYAN_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"PURPLE_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"BLUE_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"BROWN_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"GREEN_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"RED_STAINED_HARDENED_CLAY", blocks:[], labels:[]},
+{name:"BLACK_STAINED_HARDENED_CLAY", blocks:[], labels:[]}
+];
+
+//Colour Array
+var array_colours = [
+{rgb:{r:0, g:0, b:0}, id:0, shade:0},
+{rgb:{r:0, g:0, b:0}, id:0, shade:1},
+{rgb:{r:0, g:0, b:0}, id:0, shade:2},
+{rgb:{r:127, g:178, b:56}, id:1, shade:0},
+{rgb:{r:109, g:153, b:48}, id:1, shade:1},
+{rgb:{r:89, g:125, b:39}, id:1, shade:2},
+{rgb:{r:247, g:233, b:163}, id:2, shade:0},
+{rgb:{r:213, g:201, b:140}, id:2, shade:1},
+{rgb:{r:174, g:164, b:115}, id:2, shade:2},
+{rgb:{r:199, g:199, b:199}, id:3, shade:0},
+{rgb:{r:171, g:171, b:171}, id:3, shade:1},
+{rgb:{r:140, g:140, b:140}, id:3, shade:2},
+{rgb:{r:255, g:0, b:0}, id:4, shade:0},
+{rgb:{r:220, g:0, b:0}, id:4, shade:1},
+{rgb:{r:180, g:0, b:0}, id:4, shade:2},
+{rgb:{r:160, g:160, b:255}, id:5, shade:0},
+{rgb:{r:138, g:138, b:220}, id:5, shade:1},
+{rgb:{r:112, g:112, b:180}, id:5, shade:2},
+{rgb:{r:167, g:167, b:167}, id:6, shade:0},
+{rgb:{r:144, g:144, b:144}, id:6, shade:1},
+{rgb:{r:117, g:117, b:117}, id:6, shade:2},
+{rgb:{r:0, g:124, b:0}, id:7, shade:0},
+{rgb:{r:0, g:106, b:0}, id:7, shade:1},
+{rgb:{r:0, g:87, b:0}, id:7, shade:2},
+{rgb:{r:255, g:255, b:255}, id:8, shade:0},
+{rgb:{r:220, g:220, b:220}, id:8, shade:1},
+{rgb:{r:180, g:180, b:180}, id:8, shade:2},
+{rgb:{r:164, g:168, b:184}, id:9, shade:0},
+{rgb:{r:141, g:144, b:158}, id:9, shade:1},
+{rgb:{r:115, g:118, b:129}, id:9, shade:2},
+{rgb:{r:151, g:109, b:77}, id:10, shade:0},
+{rgb:{r:130, g:94, b:66}, id:10, shade:1},
+{rgb:{r:106, g:76, b:54}, id:10, shade:2},
+{rgb:{r:112, g:112, b:112}, id:11, shade:0},
+{rgb:{r:96, g:96, b:96}, id:11, shade:1},
+{rgb:{r:79, g:79, b:79}, id:11, shade:2},
+{rgb:{r:64, g:64, b:255}, id:12, shade:0},
+{rgb:{r:55, g:55, b:220}, id:12, shade:1},
+{rgb:{r:45, g:45, b:180}, id:12, shade:2},
+{rgb:{r:143, g:119, b:72}, id:13, shade:0},
+{rgb:{r:123, g:102, b:62}, id:13, shade:1},
+{rgb:{r:100, g:84, b:50}, id:13, shade:2},
+{rgb:{r:255, g:252, b:245}, id:14, shade:0},
+{rgb:{r:220, g:217, b:211}, id:14, shade:1},
+{rgb:{r:180, g:177, b:172}, id:14, shade:2},
+{rgb:{r:216, g:127, b:51}, id:15, shade:0},
+{rgb:{r:186, g:109, b:44}, id:15, shade:1},
+{rgb:{r:152, g:89, b:36}, id:15, shade:2},
+{rgb:{r:178, g:76, b:216}, id:16, shade:0},
+{rgb:{r:153, g:65, b:186}, id:16, shade:1},
+{rgb:{r:125, g:53, b:152}, id:16, shade:2},
+{rgb:{r:102, g:153, b:216}, id:17, shade:0},
+{rgb:{r:88, g:132, b:186}, id:17, shade:1},
+{rgb:{r:72, g:108, b:152}, id:17, shade:2},
+{rgb:{r:229, g:229, b:51}, id:18, shade:0},
+{rgb:{r:197, g:197, b:44}, id:18, shade:1},
+{rgb:{r:161, g:161, b:36}, id:18, shade:2},
+{rgb:{r:127, g:204, b:25}, id:19, shade:0},
+{rgb:{r:109, g:176, b:21}, id:19, shade:1},
+{rgb:{r:89, g:144, b:17}, id:19, shade:2},
+{rgb:{r:242, g:127, b:165}, id:20, shade:0},
+{rgb:{r:208, g:109, b:142}, id:20, shade:1},
+{rgb:{r:170, g:89, b:116}, id:20, shade:2},
+{rgb:{r:76, g:76, b:76}, id:21, shade:0},
+{rgb:{r:65, g:65, b:65}, id:21, shade:1},
+{rgb:{r:53, g:53, b:53}, id:21, shade:2},
+{rgb:{r:153, g:153, b:153}, id:22, shade:0},
+{rgb:{r:132, g:132, b:132}, id:22, shade:1},
+{rgb:{r:108, g:108, b:108}, id:22, shade:2},
+{rgb:{r:76, g:127, b:153}, id:23, shade:0},
+{rgb:{r:65, g:109, b:132}, id:23, shade:1},
+{rgb:{r:53, g:89, b:108}, id:23, shade:2},
+{rgb:{r:127, g:63, b:178}, id:24, shade:0},
+{rgb:{r:109, g:54, b:153}, id:24, shade:1},
+{rgb:{r:89, g:44, b:125}, id:24, shade:2},
+{rgb:{r:51, g:76, b:178}, id:25, shade:0},
+{rgb:{r:44, g:65, b:153}, id:25, shade:1},
+{rgb:{r:36, g:53, b:125}, id:25, shade:2},
+{rgb:{r:102, g:76, b:51}, id:26, shade:0},
+{rgb:{r:88, g:65, b:44}, id:26, shade:1},
+{rgb:{r:72, g:53, b:36}, id:26, shade:2},
+{rgb:{r:102, g:127, b:51}, id:27, shade:0},
+{rgb:{r:88, g:109, b:44}, id:27, shade:1},
+{rgb:{r:72, g:89, b:36}, id:27, shade:2},
+{rgb:{r:153, g:51, b:51}, id:28, shade:0},
+{rgb:{r:132, g:44, b:44}, id:28, shade:1},
+{rgb:{r:108, g:36, b:36}, id:28, shade:2},
+{rgb:{r:25, g:25, b:25}, id:29, shade:0},
+{rgb:{r:21, g:21, b:21}, id:29, shade:1},
+{rgb:{r:17, g:17, b:17}, id:29, shade:2},
+{rgb:{r:250, g:238, b:77}, id:30, shade:0},
+{rgb:{r:215, g:205, b:66}, id:30, shade:1},
+{rgb:{r:176, g:168, b:54}, id:30, shade:2},
+{rgb:{r:92, g:219, b:213}, id:31, shade:0},
+{rgb:{r:79, g:188, b:183}, id:31, shade:1},
+{rgb:{r:64, g:154, b:150}, id:31, shade:2},
+{rgb:{r:74, g:128, b:255}, id:32, shade:0},
+{rgb:{r:63, g:110, b:220}, id:32, shade:1},
+{rgb:{r:52, g:90, b:180}, id:32, shade:2},
+{rgb:{r:0, g:217, b:58}, id:33, shade:0},
+{rgb:{r:0, g:187, b:50}, id:33, shade:1},
+{rgb:{r:0, g:153, b:40}, id:33, shade:2},
+{rgb:{r:129, g:86, b:49}, id:34, shade:0},
+{rgb:{r:111, g:74, b:42}, id:34, shade:1},
+{rgb:{r:91, g:60, b:34}, id:34, shade:2},
+{rgb:{r:112, g:2, b:0}, id:35, shade:0},
+{rgb:{r:96, g:1, b:0}, id:35, shade:1},
+{rgb:{r:79, g:1, b:0}, id:35, shade:2},
+{rgb:{r:209, g:177, b:161}, id:36, shade:0},
+{rgb:{r:180, g:152, b:138}, id:36, shade:1},
+{rgb:{r:147, g:124, b:113}, id:36, shade:2},
+{rgb:{r:159, g:82, b:36}, id:37, shade:0},
+{rgb:{r:137, g:70, b:31}, id:37, shade:1},
+{rgb:{r:112, g:57, b:25}, id:37, shade:2},
+{rgb:{r:149, g:87, b:108}, id:38, shade:0},
+{rgb:{r:128, g:75, b:93}, id:38, shade:1},
+{rgb:{r:105, g:61, b:76}, id:38, shade:2},
+{rgb:{r:112, g:108, b:138}, id:39, shade:0},
+{rgb:{r:96, g:93, b:119}, id:39, shade:1},
+{rgb:{r:79, g:76, b:97}, id:39, shade:2},
+{rgb:{r:186, g:133, b:36}, id:40, shade:0},
+{rgb:{r:160, g:114, b:31}, id:40, shade:1},
+{rgb:{r:131, g:93, b:25}, id:40, shade:2},
+{rgb:{r:103, g:117, b:53}, id:41, shade:0},
+{rgb:{r:88, g:100, b:45}, id:41, shade:1},
+{rgb:{r:72, g:82, b:37}, id:41, shade:2},
+{rgb:{r:160, g:77, b:78}, id:42, shade:0},
+{rgb:{r:138, g:66, b:67}, id:42, shade:1},
+{rgb:{r:112, g:54, b:55}, id:42, shade:2},
+{rgb:{r:57, g:41, b:35}, id:43, shade:0},
+{rgb:{r:49, g:35, b:30}, id:43, shade:1},
+{rgb:{r:40, g:28, b:24}, id:43, shade:2},
+{rgb:{r:135, g:107, b:98}, id:44, shade:0},
+{rgb:{r:116, g:92, b:84}, id:44, shade:1},
+{rgb:{r:95, g:75, b:69}, id:44, shade:2},
+{rgb:{r:87, g:92, b:92}, id:45, shade:0},
+{rgb:{r:75, g:79, b:79}, id:45, shade:1},
+{rgb:{r:61, g:64, b:64}, id:45, shade:2},
+{rgb:{r:122, g:73, b:88}, id:46, shade:0},
+{rgb:{r:105, g:62, b:75}, id:46, shade:1},
+{rgb:{r:86, g:51, b:62}, id:46, shade:2},
+{rgb:{r:76, g:62, b:92}, id:47, shade:0},
+{rgb:{r:65, g:53, b:79}, id:47, shade:1},
+{rgb:{r:53, g:43, b:64}, id:47, shade:2},
+{rgb:{r:76, g:50, b:35}, id:48, shade:0},
+{rgb:{r:65, g:43, b:30}, id:48, shade:1},
+{rgb:{r:53, g:35, b:24}, id:48, shade:2},
+{rgb:{r:76, g:82, b:42}, id:49, shade:0},
+{rgb:{r:65, g:70, b:36}, id:49, shade:1},
+{rgb:{r:53, g:57, b:29}, id:49, shade:2},
+{rgb:{r:142, g:60, b:46}, id:50, shade:0},
+{rgb:{r:122, g:51, b:39}, id:50, shade:1},
+{rgb:{r:100, g:42, b:32}, id:50, shade:2},
+{rgb:{r:37, g:22, b:16}, id:51, shade:0},
+{rgb:{r:31, g:18, b:13}, id:51, shade:1},
+{rgb:{r:26, g:15, b:11}, id:51, shade:2}
+];
+
+// ====================================================== VARIABLES ======================================================
+//Various elements
+var element_smallCanvas = null;
+var element_largeCanvas = null;
+var element_inputImage = null;
+
+var image_iconPlus = null;
+var image_iconDot = null;
+var image_iconMinus = null;
+var image_icon1 = null;
+var image_icon5 = null;
+var image_icon10 = null;
+var image_iconUnknown = null;
+
+var element_toolTip = null;
+
+var imageData = null; //The image data of the input image
+
+var toolTipColumn = {start:0, end:127}; //The start and end column that the tooltip can show over
+
+// ====================================================== INIT ======================================================
+function init() {
+	//Get elements
+	element_smallCanvas = document.getElementById("smallCanvas");
+	element_largeCanvas = document.getElementById("largeCanvas");
+	element_inputImage = document.getElementById("inputImage");
+
+	image_iconPlus = document.getElementById("icon_plus");
+	image_iconDot = document.getElementById("icon_dot");
+	image_iconMinus = document.getElementById("icon_minus");
+	image_icon1 = document.getElementById("icon_1");
+	image_icon5 = document.getElementById("icon_5");
+	image_icon10 = document.getElementById("icon_10");
+	image_iconUnknown = document.getElementById("icon_unknown");
+
+	element_toolTip = document.getElementById("blockToolTip");
+
+	element_largeCanvas.addEventListener('mousemove', updateBlockToolTip);
+	element_largeCanvas.addEventListener('mouseover', showBlockToolTip);
+	element_largeCanvas.addEventListener('mouseleave', hideBlockToolTip);
+
+	//Fill map array
+	for (var i = 0; i < 128; i++) {
+		array_map[i] = [];
+	}
+
+	for (var i = 0; i < 128; i++) {
+		for (var j = 0; j < 128; j++) {
+			array_map[i][j] = {id:null, shade:null};
+		}
+	}
+
+	//Put the csv_blocks into their respective places in the block data array
+	var splitArray = csv_blocks.split(';'); //Split the csv into temp array
+	for (var i = 0; i < splitArray.length; i++) {
+		array_blockData[i + 1].blocks = splitArray[i].split(','); //Split the block names into the block data array
+		//Remove empty items
+		var done = false;
+		while (!done) {
+			if (array_blockData[i + 1].blocks[array_blockData[i + 1].blocks.length-1] == "") array_blockData[i + 1].blocks.pop();
+			else done = true;
+		}
+	}
+
+	//Put the csv_blockLabels into their respective places in the block data array
+	var splitArray2 = csv_blockLabels.split(';'); //Split the csv into temp array
+	for (var i = 0; i < splitArray2.length; i++) {
+		array_blockData[i + 1].labels = splitArray2[i].split(','); //Split the block names into the block data array
+		//Remove empty items
+		var done = false;
+		while (!done) {
+			if (array_blockData[i + 1].labels[array_blockData[i + 1].labels.length-1] == "") array_blockData[i + 1].labels.pop();
+			else done = true;
+		}
+	}
+
+
+	//Fill the block selector list
+	fillBlockSelectorList();
+
+	//Select all default blocks
+	setDefaultSelected()
+}
+
+// ====================================================== ACCORDION ======================================================
+function toggleAccordion() {
+	var accordion = document.getElementById("accordion1");
+	if (accordion.style.height != "600px"){
+      accordion.style.height = "600px";
+      accordion.style.overflowY = "scroll";
+    } else {
+      accordion.style.height = "0px";
+      accordion.style.overflowY = "hidden";
+    } 
+}
+
+// ====================================================== PREVIEW BOX ======================================================
+function closePreviewBox() {
+	document.getElementById("imagePreviewBox").style.display = "none";
+}
+function openPreviewBox(image) {
+	document.getElementById("imagePreviewBox").style.display = "block";
+	var imgElement = document.getElementById("previewImage");
+	imgElement.src = image.src;
+	imgElement.style.marginLeft = -imgElement.width/2 + "px";
+	imgElement.style.marginTop = -imgElement.height/2 + "px";
+}
+
+// ====================================================== LOAD IMAGE ======================================================
+function loadImage(input) {
+	if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+                document.getElementById("inputImagePreview").style.backgroundImage = "url(" + e.target.result + ")";
+                document.getElementById("inputImage").src = e.target.result;
+                updateInputImagePreview();
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+function renderImage(dithering) {
+	var ctx = element_smallCanvas.getContext("2d");
+	ctx.clearRect(0, 0, element_largeCanvas.width, element_largeCanvas.height);
+
+	//First draw the scaled, offset, and repeated image
+	var img_scale = document.getElementById("number_scale").value;
+	var img_offsetX = document.getElementById("number_offsetX").value;
+	var img_offsetY = document.getElementById("number_offsetY").value;
+	var img_sharp = document.getElementById("toggle_sharp").classList.contains("active");
+	var img_repeatX = document.getElementById("toggle_repeatX").classList.contains("active");
+	var img_repeatY = document.getElementById("toggle_repeatY").classList.contains("active");
+
+	ctx.imageSmoothingEnabled = !img_sharp;
+
+	var scalePercent = img_scale / element_inputImage.width;
+
+	ctx.drawImage(element_inputImage, img_offsetX, img_offsetY, img_scale, element_inputImage.height * scalePercent);
+	//console.info(xScale + "," + heightChange);
+
+	/*if (img_repeatX && img_repeatY) {
+		for (var i = 0; i < 128/xScale; i++) {
+			for (var j = 0; j < 128/xScale; j++) {
+				ctx.drawImage(element_inputImage, img_offsetX + (xScale*i), img_offsetY + (heightChange*j), xScale, heightChange);
+			}
+		}
+	}
+	if (!img_repeatX && img_repeatY) {
+		for (var j = 0; j < 128/xScale; j++) {
+			ctx.drawImage(element_inputImage, img_offsetX, img_offsetY + (heightChange*j), xScale, heightChange);
+		}
+	}
+	if (img_repeatX && !img_repeatY) {
+		for (var i = 0; i < 128/xScale; i++) {
+			ctx.drawImage(element_inputImage, img_offsetX + (xScale*i), img_offsetY, xScale, heightChange);
+		}
+	}
+	if (!img_repeatX && !img_repeatY) {
+		for (var i = 0; i < 128/xScale; i++) {
+			ctx.drawImage(element_inputImage, img_offsetX, img_offsetY, img_scale, element_inputImage.width * scalePercent);
+		}
+	}*/
+	imageData = ctx.createImageData(128,128);
+	imageData = ctx.getImageData(0,0,128,128);
+
+	//Convert
+	if (!dithering) {
+		//---------- No dithering ----------
+		for (var i = 0; i < 128; i ++) {
+			for (var j = 0; j < 128; j ++) {
+				var currentPixel = getPixelAtPosition(i, j);
+				var closestColour = getClosestColour(currentPixel);
+				if (currentPixel.a > 0) ctx.fillStyle = "rgba(" + closestColour.r + "," + closestColour.g + "," + closestColour.b + ",1)";
+				else ctx.fillStyle = "#151515";
+				ctx.fillRect(i, j, 1, 1);
+			}
+		}
+	}
+	else {
+		//---------- Floyd-Steinberg dithering ----------
+		for (var i = 0; i < 128; i ++) {
+			for (var j = 0; j < 128; j ++) {
+				var oldPixel = getPixelAtPosition(i, j);
+				var newPixel = getClosestColour(getPixelAtPosition(i, j));
+				setPixelAtPosition(i, j, newPixel);
+				var error = subtractColours(oldPixel, newPixel);
+
+				if (oldPixel.a > 0) ctx.fillStyle = "rgba(" + newPixel.r + "," + newPixel.g + "," + newPixel.b + ",1)";
+				else ctx.fillStyle = "#151515";
+				ctx.fillRect(i, j, 1, 1);
+
+				var errorMultiply = multiplyColours(error, {r:7/16, g:7/16, b:7/16});
+				if (i < 127) setPixelAtPosition(i + 1, j, addColours(getPixelAtPosition(i + 1, j), errorMultiply));
+
+				errorMultiply = multiplyColours(error, {r:3/16, g:3/16, b:3/16});
+				if ((i > 0) && (j < 127)) setPixelAtPosition(i - 1, j + 1, addColours(getPixelAtPosition(i - 1, j + 1), errorMultiply));
+
+				errorMultiply = multiplyColours(error, {r:5/16, g:5/16, b:5/16});
+				if (j < 127) setPixelAtPosition(i, j + 1, addColours(getPixelAtPosition(i, j + 1), errorMultiply));
+
+				errorMultiply = multiplyColours(error, {r:1/16, g:1/16, b:1/16});
+				if ((i < 127) && (j < 127)) setPixelAtPosition(i + 1, j + 1, addColours(getPixelAtPosition(i + 1, j + 1), errorMultiply));
+			}
+		}
+	}
+	imageData = ctx.getImageData(0,0,128,128);
+
+
+
+	//Enable the other buttons
+	document.getElementById("button_loadColumn").disabled = false;
+	document.getElementById("button_renderMap").disabled = false;
+}
+
+function distanceBetweenXYZ(x1, y1, z1, x2, y2, z2) {
+	return(Math.sqrt(squared(x1-x2) + squared(y1-y2) + squared(z1-z2)));
+}
+
+function squared(num) {
+	return(num * num);
+}
+
+function getClosestColour(rgb) {
+	var distance = 99999999; //The distance between the current pixel colour XYZ/RGB and the nearest colour from the colour data array
+	var currentColour = {r:0, g:0, b:0}; //The current pixel colour, this is updated when this algorithm finds a closer colour
+	var currentPixel = {r:rgb.r, g:rgb.g, b:rgb.b}; //Get the colours of the current working pixel
+	for (var k = 3; k < array_colours.length; k++) {
+		var currentDistance = distanceBetweenXYZ(currentPixel.r, currentPixel.g, currentPixel.b, array_colours[k].rgb.r, array_colours[k].rgb.g, array_colours[k].rgb.b); //The checking distance between pixel in imageData and a colour from array_colours
+		if (currentDistance < distance) {
+			distance = currentDistance;
+			currentColour.r = array_colours[k].rgb.r;
+			currentColour.g = array_colours[k].rgb.g;
+			currentColour.b = array_colours[k].rgb.b;
+		}
+	}
+	return({r:currentColour.r, g:currentColour.g, b:currentColour.b});
+}
+
+function addColours(rgb1, rgb2) {
+	var newRGB = {r:rgb1.r + rgb2.r, g:rgb1.g + rgb2.g, b:rgb1.b + rgb2.b};
+	if(newRGB.r > 255) newRGB.r = 255;
+	if(newRGB.g > 255) newRGB.g = 255;
+	if(newRGB.b > 255) newRGB.b = 255;
+	return(newRGB)
+}
+
+function subtractColours(rgb1, rgb2) {
+	var newRGB = {r:rgb1.r - rgb2.r, g:rgb1.g - rgb2.g, b:rgb1.b - rgb2.b};
+	if(newRGB.r < 0) newRGB.r = 0;
+	if(newRGB.g < 0) newRGB.g = 0;
+	if(newRGB.b < 0) newRGB.b = 0;
+	return(newRGB)
+}
+
+function multiplyColours(rgb1, rgb2) {
+	var newRGB = {r:rgb1.r * rgb2.r, g:rgb1.g * rgb2.g, b:rgb1.b * rgb2.b};
+	if(newRGB.r > 255) newRGB.r = 255;
+	if(newRGB.g > 255) newRGB.g = 255;
+	if(newRGB.b > 255) newRGB.b = 255;
+	newRGB.r = Math.round(newRGB.r);
+	newRGB.g = Math.round(newRGB.g);
+	newRGB.b = Math.round(newRGB.b);
+	return(newRGB)
+}
+
+
+// ====================================================== MAP DATA ======================================================
+//Clear canvas
+function clearCanvas() {
+	var ctx = element_largeCanvas.getContext("2d");
+	ctx.clearRect(0, 0, element_largeCanvas.width, element_largeCanvas.height);
+}
+
+//Load a column into the map array
+function loadColumn(columnNum) {
+	for (var i = 0; i < 128; i ++) {
+		var rgb = getPixelAtPosition(columnNum, i);
+		var index = findColourIndex(rgb.r, rgb.g, rgb.b);
+		array_map[columnNum][i].id = index;
+		array_map[columnNum][i].shade = array_colours[index].shade;
+	}
+
+	array_startingHeights[columnNum] = 0;
+	var tempHeight = 0; //A temporary height to measure the lowest point of a column
+	var lowestHeight = 0; //The lowest point
+	for (var i = 0; i < 128; i ++) {
+		var water = false; //Check if water
+		if ((array_map[columnNum][i].id >= 36) && (array_map[columnNum][i].id <= 38)) water = true;
+
+		if (array_map[columnNum][i].shade == 0) tempHeight += 1;
+		if (array_map[columnNum][i].shade == 2) tempHeight -= 1;
+		if (tempHeight < lowestHeight) lowestHeight = tempHeight;
+	}
+
+	array_startingHeights[columnNum] = lowestHeight * -1;
+}
+
+//Render a specified column
+function renderColumn(num, ctx) {
+	//Render the blocks
+	var count = document.getElementById("number_cropY").value;
+	for (var i = 0; i < count; i++) {
+		var blockID = array_colours[array_map[num][i].id].id;
+		if (blockID == 0) ctx.drawImage(image_iconUnknown, num * 16, i * 16);
+		else ctx.drawImage(array_imageIDs[blockID], num * 16, i * 16);
+		if (blockID == 12) {
+			switch(array_colours[array_map[num][i].id].shade) {
+				case 0:
+					ctx.drawImage(image_icon1, num * 16, i * 16);
+					break;
+				case 1:
+					ctx.drawImage(image_icon5, num * 16, i * 16);
+					break;
+				case 2:
+					ctx.drawImage(image_icon10, num * 16, i * 16);
+					break;
+			}
+		}
+		else if (blockID != 0){
+			switch(array_colours[array_map[num][i].id].shade) {
+				case 0:
+					ctx.drawImage(image_iconPlus, num * 16, i * 16);
+					break;
+				case 1:
+					ctx.drawImage(image_iconDot, num * 16, i * 16);
+					break;
+				case 2:
+					ctx.drawImage(image_iconMinus, num * 16, i * 16);
+					break;
+			}
+		}
+
+		array_blockCount[blockID] += 1;
+	}
+}
+
+//Render columns between START and START+COUNT
+function renderColumns(start, count) {
+	//Reset the block count
+	for (var i = 0; i < array_blockData.length; i ++) {
+		array_blockCount[i] = 0;
+	}
+
+	toolTipColumn.start = start;
+	toolTipColumn.end = start+count;
+
+	clearCanvas();
+	var ctx = element_largeCanvas.getContext("2d");
+	ctx.imageSmoothingEnabled = false;
+	rememberIDs();
+
+	//Render the columns
+	var howManyColumns = start + count;
+	
+	if (count > 1) {
+		howManyColumns = document.getElementById("number_cropX").value;
+	}
+	for (var i = start; i < howManyColumns; i++) {
+		loadColumn(i);
+		renderColumn(i, ctx);
+	}
+
+	fillShoppingList(); //Reset and then populate the shopping list
+
+	//Render the grid
+	for (var i = 0; i < Math.floor(2048/5); i++) {
+		//Vertical thick
+		ctx.beginPath();
+		ctx.moveTo((i * 80) + 0.5, 0.5);
+		ctx.lineTo((i * 80) + 0.5, element_largeCanvas.height + 0.5);
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 3;
+		ctx.stroke();
+
+		//Horizontal thick
+		ctx.beginPath();
+		ctx.moveTo(0.5, (i * 80) + 0.5);
+		ctx.lineTo(element_largeCanvas.width + 0.5, (i * 80) + 0.5);
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 3;
+		ctx.stroke();
+
+		//Vertical thin
+		ctx.beginPath();
+		ctx.moveTo((i * 80) + 0.5, 0.5);
+		ctx.lineTo((i * 80) + 0.5, element_largeCanvas.height + 0.5);
+		ctx.strokeStyle = "#ffffff";
+		ctx.lineWidth = 1;
+		ctx.stroke();
+
+		//Horizontal thin
+		ctx.beginPath();
+		ctx.moveTo(0.5, (i * 80) + 0.5);
+		ctx.lineTo(element_largeCanvas.width + 0.5, (i * 80) + 0.5);
+		ctx.strokeStyle = "#ffffff";
+		ctx.lineWidth = 1;
+		ctx.stroke();
+	}
+}
+
+//For the single column button
+function renderSingleColumn() {
+	var columnNum = document.getElementById("columnNumInput").value - 1;
+	var count = document.getElementById("number_cropX").value;
+	if (columnNum >= 0 && columnNum < count) {
+		renderColumns(columnNum,1);
+	}
+}
+
+//Get the pixel data of a pixel at x,y
+function getPixelAtPosition(x, y) {
+	var pixelPos = ((y * (imageData.width * 4)) + (x * 4));
+	if (imageData != null) return ({r:imageData.data[pixelPos], g:imageData.data[pixelPos + 1], b:imageData.data[pixelPos + 2], a:imageData.data[pixelPos + 3]});
+}
+
+//Set the pixel at position
+function setPixelAtPosition(x , y, rgb) {
+	var pixelPos = ((y * (imageData.width * 4)) + (x * 4));
+	if (imageData != null) {
+		imageData.data[pixelPos] = rgb.r;
+		imageData.data[pixelPos + 1] = rgb.g;
+		imageData.data[pixelPos + 2] = rgb.b;
+	}
+}
+
+//Finds the index in array_colours of a colour, returns 0 if it is not found
+function findColourIndex(r, g, b) {
+	var found = false;
+	for (var i = 0; i < array_colours.length; i++) {
+		if (array_colours[i].rgb.r == r) {
+			if (array_colours[i].rgb.g == g) {
+				if (array_colours[i].rgb.b == b) {
+					return i;
+					found = true;
+				}
+			}
+		}
+	}
+	if (!found) return 0;
+}
+
+//Make a note of the image element ID chosen for each colour
+function rememberIDs() {
+	for (var i = 1; i < array_blockData.length; i++) {
+		array_imageIDs[i] = document.getElementById("blockImage_" + i + "_" + array_selectedBlocks[i]);
+	}
+}
+
+//Show the tooltip when mouse enters the canvas
+function showBlockToolTip() {
+	element_toolTip.style.visibility = "visible";
+}
+
+//Update the tooltip when the mouse moves over the map that displays the block's name under the cursor
+function updateBlockToolTip(e) {
+	//Move the tooltip
+	element_toolTip.style.left = (e.clientX + 10) + "px";
+	element_toolTip.style.top = (e.clientY) + "px";
+
+	var x = e.pageX - (element_largeCanvas.offsetLeft - element_largeCanvas.parentElement.scrollLeft); //x position within the element.
+ 	var y = e.pageY - (element_largeCanvas.offsetTop);  //y position within the element.
+
+ 	x = Math.floor(x/16);
+ 	y = Math.floor(y/16);
+
+ 	if (array_map[x][y].id != null) {
+ 		//Get the block name
+	 	var mapColourID = array_map[x][y].id;
+	 	var blockID = array_colours[mapColourID].id;
+	 	var selectedBlock = array_selectedBlocks[blockID];
+	 	var blockLabel = array_blockData[blockID].labels[selectedBlock];
+
+	 	//Set the shade text
+	 	var shade = "";
+	 	var mapColourShade = array_map[x][y].shade;
+	 	if (blockID == 12) {
+	 		switch (mapColourShade) {
+	 			case 0:
+	 				shade = "1 block deep"
+	 				break;
+	 			case 1:
+	 				shade = "5 blocks deep"
+	 				break;
+	 			case 2:
+	 				shade = "10 blocks deep"
+	 				break;
+	 		}
+	 	}
+	 	else {
+	 		switch (mapColourShade) {
+	 			case 0:
+	 				shade = "Up"
+	 				break;
+	 			case 1:
+	 				shade = "Flat"
+	 				break;
+	 			case 2:
+	 				shade = "Down"
+	 				break;
+	 		}
+	 	}
+
+	 	if ((x >= toolTipColumn.start) && (x < toolTipColumn.end)) {
+	 		element_toolTip.innerHTML = blockLabel + "<br />" + shade;
+	 		if (y == 0) element_toolTip.innerHTML +=  "<br />" + "y + " + array_startingHeights[x];
+	 	}
+	 	else element_toolTip.innerHTML = "";
+
+	 	if (blockLabel == "Unknown") element_toolTip.innerHTML = "Invalid colour";
+	 	if (!(x < document.getElementById("number_cropX").value && y < document.getElementById("number_cropY").value)) element_toolTip.innerHTML = "?";
+	 }
+}
+
+//Hide the tooltip when the mouse exits the canvas
+function hideBlockToolTip() {
+	element_toolTip.style.visibility = "hidden";
+}
+
+//Reset then populate the shopping list
+function fillShoppingList() {
+	var element_shoppingList = document.getElementById("shoppingList");
+
+	//Empty the shopping list
+	while (element_shoppingList.firstChild) {
+    	element_shoppingList.removeChild(element_shoppingList.firstChild);
+	}
+
+	//Populate shopping list
+	for (var i = 0; i < array_blockCount.length; i++) {
+		if (array_blockCount[i] > 0) {
+			//Shopping list item element
+			var element_shoppingListItem = document.createElement("div");
+			element_shoppingListItem.classList.add("shoppingListItem");
+
+			//Block image
+			var element_blockImage = document.createElement("img");
+			if (i > 0) element_blockImage.src = array_imageIDs[i].src;
+			else element_blockImage.src = "images/blocks/unknown.png";
+			element_shoppingListItem.appendChild(element_blockImage);
+
+			//Block name
+			var element_blockName = document.createElement("p");
+			var blockName = array_blockData[i].labels[array_selectedBlocks[i]];
+			element_blockName.innerHTML = blockName;
+			element_shoppingListItem.appendChild(element_blockName);
+
+			//Block count
+			var element_blockCount = document.createElement("p");
+			element_blockCount.innerHTML = array_blockCount[i];
+			element_shoppingListItem.appendChild(element_blockCount);
+
+			//Block stacks
+			var element_blockStacks = document.createElement("p");
+			element_blockStacks.classList.add("stacks");
+			var stacks = Math.floor(array_blockCount[i]/64);
+			var remainder = array_blockCount[i] % 64;
+			element_blockStacks.innerHTML = "";
+			if ((stacks > 0) && (blockName != "water") && (blockName != "lava")) element_blockStacks.innerHTML = stacks + " stacks + " + remainder;
+			element_shoppingListItem.appendChild(element_blockStacks);
+
+			//Final append
+			element_shoppingList.appendChild(element_shoppingListItem);
+		}
+	}
+}
+
+// ====================================================== BLOCK SCROLL ======================================================
+//Fill the block selector list with the colours and their respective blocks for people to choose
+function fillBlockSelectorList() {
+	//The sizes of the colours displayed in the list
+	var colourSide = "20px";
+	var colourMiddle = "60px";
+
+	var element_blockSelectorList = document.getElementById("blockSelectorList"); //Get the block selector list element
+
+	for (var i = 1; i < array_blockData.length; i++) {
+		//BlockRow
+		var element_blockRow = document.createElement("div"); //Create the blockrow for all of the block stuff to go into
+		element_blockRow.classList.add("blockRow"); //Add class to blockRow
+
+		//Colours
+		var element_colour1 = document.createElement("div");
+		element_colour1.classList.add("colour");
+		element_colour1.style.width = colourSide;
+		element_colour1.style.backgroundColor = "rgb" + getRGBString(i*3);
+		var element_hex1 = document.createElement("p");
+		element_hex1.innerHTML = rgbToHex(array_colours[i*3].rgb.r, array_colours[i*3].rgb.g, array_colours[i*3].rgb.b);
+		element_colour1.appendChild(element_hex1);
+		element_blockRow.appendChild(element_colour1);
+
+		var element_colour2 = document.createElement("div");
+		element_colour2.classList.add("colour");
+		element_colour2.style.width = colourMiddle;
+		element_colour2.style.backgroundColor = "rgb" + getRGBString((i*3)+1);
+		var element_hex2 = document.createElement("p");
+		element_hex2.innerHTML = rgbToHex(array_colours[(i*3)+1].rgb.r, array_colours[(i*3)+1].rgb.g, array_colours[(i*3)+1].rgb.b);
+		element_colour2.appendChild(element_hex2);
+		element_blockRow.appendChild(element_colour2);
+
+		var element_colour3 = document.createElement("div");
+		element_colour3.classList.add("colour");
+		element_colour3.style.width = colourSide;
+		element_colour3.style.backgroundColor = "rgb" + getRGBString((i*3)+2);
+		var element_hex3 = document.createElement("p");
+		element_hex3.innerHTML = rgbToHex(array_colours[(i*3)+2].rgb.r, array_colours[(i*3)+2].rgb.g, array_colours[(i*3)+2].rgb.b);
+		element_colour3.appendChild(element_hex3);
+		element_blockRow.appendChild(element_colour3);
+
+		//Colour name
+		var element_colourName = document.createElement("p");
+		element_colourName.innerHTML = array_blockData[i].name.replace(/_/g,' ');
+		element_blockRow.appendChild(element_colourName);
+
+		//Blockscroll
+		var element_blockScroll = document.createElement("div");
+		element_blockScroll.classList.add("blockScroll");
+		var element_blockScrollInner = document.createElement("div");
+		element_blockScrollInner.style.width = array_blockData[i].blocks.length*68 + "px";
+		for (var j = 0; j < array_blockData[i].blocks.length; j++) { //Add the blocks to the blockscroll
+			//Block
+			var element_block = document.createElement("div");
+			element_block.classList.add("block");
+			element_block.setAttribute("onclick","selectBlock(" + i + "," + j+ ");");
+
+			//Image
+			var element_blockImage = document.createElement("img");
+			element_blockImage.src = "images/blocks/" + array_blockData[i].blocks[j] + ".png";
+			element_blockImage.alt = array_blockData[i].blocks[j].replace(/_/g,' ');
+			element_blockImage.id = "blockImage_" + i + "_" + j;
+			element_block.appendChild(element_blockImage);
+
+			//Text
+			var element_blockName = document.createElement("p");
+			element_blockName.innerHTML = array_blockData[i].labels[j];
+			element_block.appendChild(element_blockName);
+
+			//Append
+			element_blockScrollInner.appendChild(element_block);
+		}
+		element_blockScroll.appendChild(element_blockScrollInner);
+		element_blockRow.appendChild(element_blockScroll);
+
+		//Clear float
+		var element_clearFloat = document.createElement("div");
+
+
+		//Final append
+		element_blockSelectorList.appendChild(element_blockRow);
+	}
+
+}
+
+//Get a string "(r,g,b)" from the colour data array, for use in rgb commands
+function getRGBString(index) {
+	var r = array_colours[index].rgb.r;
+	var g = array_colours[index].rgb.g;
+	var b = array_colours[index].rgb.b;
+	return("(" + r + "," + g + "," + b + ")");
+}
+
+//Input the colour index and the selected block index, and make the selected block have the selected tag and remove selected tags from the rest
+function selectBlock(colourIndex, blockIndex) {
+	array_selectedBlocks[colourIndex] = blockIndex; //Put the selected block index into the array at the relevant position
+
+	var element_blockRow = document.getElementById("blockSelectorList"); //Blockrow
+	var element_blockScroll = element_blockRow.children[colourIndex-1].children[4].children[0]; //Not *really* the blockscroll element, but it is the scrolling div just inside it
+
+	//Set all the block elements to not selected
+	for (var i = 0; i < array_blockData[colourIndex].blocks.length; i++) {
+		element_blockScroll.children[i].classList.remove("selected");
+	}
+
+	//Add the selected class to the actual selected block
+	element_blockScroll.children[blockIndex].classList.add("selected");
+}
+
+//Select the defaults of all blocks
+function setDefaultSelected() {
+	//Copy over the default values into the current values
+	for (var i = 0; i < array_selectedBlocksDefault.length; i++) {
+		array_selectedBlocks[i] = array_selectedBlocksDefault[i];
+	}
+
+	//Select all blocks
+	for (var i = 1; i < array_blockData.length; i++) {
+		selectBlock(i, array_selectedBlocks[i]);
+	}
+}
+
+//RGB to hex
+function rgbToHex(r, g, b) {
+  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+
+// ====================================================== SLIDERS ======================================================
+//Toggles the "checkmark" toggle button thingies
+function toggleThis(toggle) {
+	toggle.classList.toggle("active");
+	updateInputImagePreview();
+}
+
+//Update a slider
+function updateSlider(input, sliderID) {
+	document.getElementById(sliderID).value = input.value;
+	updateInputImagePreview();
+}
+
+//Update a number input
+function updateNumber(input, numberID) {
+	document.getElementById(numberID).value = input.value;
+	updateInputImagePreview();
+}
+
+//Update the properties of the input image preview
+function updateInputImagePreview() {
+	//Get input image preview element
+	var element_inputImagePreview = document.getElementById("inputImagePreview");
+
+	//Scale
+	element_inputImagePreview.style.backgroundSize = document.getElementById("number_scale").value + "px";
+
+	//Offset
+	element_inputImagePreview.style.backgroundPosition = document.getElementById("number_offsetX").value + "px " + document.getElementById("number_offsetY").value + "px";
+
+	//Sharp scale
+	if (document.getElementById("toggle_sharp").classList.contains("active")) element_inputImagePreview.style.imageRendering = "pixelated";
+	else element_inputImagePreview.style.imageRendering = "auto";
+
+	//Repeat
+	var repeatX = false;
+	if (document.getElementById("toggle_repeatX").classList.contains("active")) repeatX = true;
+	var repeatY = false;
+	if (document.getElementById("toggle_repeatY").classList.contains("active")) repeatY = true;
+
+	if (repeatX && repeatY) element_inputImagePreview.style.backgroundRepeat = "repeat";
+	if (repeatX && !repeatY) element_inputImagePreview.style.backgroundRepeat = "repeat-x";
+	if (!repeatX && repeatY) element_inputImagePreview.style.backgroundRepeat = "repeat-y";
+	if (!repeatX && !repeatY) element_inputImagePreview.style.backgroundRepeat = "no-repeat";
+
+}
+
+//Reset all of the sliders and toggles
+function resetSliders() {
+	//Scale
+	document.getElementById("slider_scale").value = 128;
+	document.getElementById("number_scale").value = 128;
+	//Offset X
+	document.getElementById("slider_offsetX").value = 0;
+	document.getElementById("number_offsetX").value = 0;
+	//Offset Y
+	document.getElementById("slider_offsetY").value = 0;
+	document.getElementById("number_offsetY").value = 0;
+
+	//Sharp scaling
+	document.getElementById("toggle_sharp").classList.remove("active");
+	//Repeat X
+	document.getElementById("toggle_repeatX").classList.remove("active");
+	//Repeat Y
+	document.getElementById("toggle_repeatY").classList.remove("active");
+
+	updateInputImagePreview();
+}
+
+</script>
+
+<body onload="init()" style="">
+
+<p id="blockToolTip" style="background-color: white; color: black; position: fixed; z-index: 10000; visibility: hidden; padding: 2px">?</p>
+
+<!-- ============= IMAGE PREVIEWS ============= -->
+<div id="imagePreviewBox" onclick="closePreviewBox()" style="z-index: 999999999">
+	<p style="margin: 8px; margin-top: 30px; padding: 0px">Click to close.</p>
+	<img id="previewImage" style="border-style: hidden">
+</div>
+
+<!-- ============= TITLE ============= -->
+<div id="title">
+	<img src="images/mapGenLogo.png" style="max-height: 100%; width: auto; margin-top: -10px;">
+</div>
+
+<div id="content">
+	<!-- ============= INTRO ============= -->
+	<p>For Minecraft 1.14</p>
+	<div class="seperator2"></div>
+	<h1 class="header">How To Use</h1>
+	<!--<iframe width="560" height="315" style="margin: auto; display: block" src="https://www.youtube.com/embed/p7LdZt9Rw_Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+	<!--<img src="images/videoThumbnail.png" style="width: 560; height: 315; box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.6);">-->
+	<iframe width="560" height="315" style="margin: auto; display: block" src="https://www.youtube.com/embed/YF8LCQ8f7Tk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	<div class="seperator2"></div>
+
+	<!-- ============= IMAGE ============= -->
+	<h1 class="header">1: Image</h1>
+	<div style="float: left; width: 200px">
+		<div id="inputImagePreview" style="background-image: url('images/default.png'); width: 128px; height: 128px; border-style: solid; margin-left: 30px; image-rendering: auto"></div>
+		<div style="width: 185px; margin: auto; display: block; margin-top:10px; margin-bottom:20px">
+			<!-- <input id="inputImageFile" type="file" accept"image/png, image/jpeg" onchange="loadImage(this)"> -->
+			<div class="image-upload-btn-wrapper">
+				<button class="image-upload-btn">Choose an image</button>
+				<input type="file" name="myfile" id="inputImageFile" onchange="loadImage(this)">
+			</div>
+		</div>
+	</div>
+	<div id="sliders">
+		<div style="height: 40px;">
+			<p>Size</p>
+			<input type="range" class="slider" min="1" max="512" value="128" id="slider_scale" oninput="updateNumber(this, 'number_scale')">
+			<input type="number" class="input" min="1" max="512" value="128" id="number_scale" oninput="updateSlider(this, 'slider_scale')">
+		</div>
+		<div style="height: 40px">
+			<p>X Offset</p>
+			<input type="range" class="slider" min="-512" max="512" value="0" id="slider_offsetX"  oninput="updateNumber(this, 'number_offsetX')">
+			<input type="number" class="input" min="-512" max="512" value="0" id="number_offsetX" oninput="updateSlider(this, 'slider_offsetX')">
+		</div>
+		<div style="height: 40px">
+			<p>Y Offset</p>
+			<input type="range" class="slider" min="-512" max="512" value="0" id="slider_offsetY"  oninput="updateNumber(this, 'number_offsetY')">
+			<input type="number" class="input" min="-512" max="512" value="0" id="number_offsetY" oninput="updateSlider(this, 'slider_offsetY')">
+		</div>
+		<p id="toggle_sharp" class="toggle" onclick="toggleThis(this)" style="margin-bottom: 5px;">Sharp Scaling</p>
+		<button id="button_resetSliders" style="float: left" onclick="resetSliders()">Reset</button>
+		<p id="toggle_repeatX" class="toggle" onclick="toggleThis(this)" style="visibility: hidden; width: 0px; margin: 0px"></p>
+		<p id="toggle_repeatY" class="toggle" onclick="toggleThis(this)" style="visibility: hidden; width: 0px; margin: 0px"></p>
+	</div>
+	<div class="seperator2" style="display: block"></div>
+
+	<!-- ============= CONVERSION ============= -->
+	<h1 class="header">2: Convert</h1>
+	<div style="width: 50%; min-width: 500px; margin: auto;">
+		<canvas id="smallCanvas" width="128" height="128" style="background-image: url(images/default.png); float: left"></canvas>
+		<div style="float: left; width: calc(100% - 128px);">
+			<button id="" style="width: calc(100% - 20px); margin: 5px;" onclick="renderImage(false)">Convert with NO dithering</button>
+			<button id="" style="width: calc(100% - 20px); margin: 5px;" onclick="renderImage(true)">Convert WITH dithering</button>
+		</div>
+	</div>
+	<img src="images/conversionTutorial/examples.png" style="clear: both; cursor: pointer; max-height: 400px; image-rendering: auto" onclick="openPreviewBox(this)">
+	<img id="inputImage" style="visibility: hidden; position: fixed;">
+	<p>Full palette for those who wish to draw directly using the official colours</p>
+	<img src="images/palette_large.png">
+	<div class="seperator2"></div>
+
+	<!-- ============= CONVERSION INSTRUCTIONS ============= -->
+	<!--
+	<div id="accordion1" class="accordion">
+		<h1 class="header">Colour Conversion</h1>
+		<p><span class="instructionNumber">1</span> Download the image below.</p>
+		<img src="images/palette.png" onclick="openPreviewBox(this)">
+		<div class="seperator"></div>
+
+		<p><span class="instructionNumber">2</span>Open it in GIMP.</p>
+		<img src="images/conversionTutorial/screenshot_01.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_02.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_03.png" onclick="openPreviewBox(this)">
+		<div class="seperator"></div>
+
+		<p><span class="instructionNumber">3</span>Make sure that the Palettes dialog is enabled.</p>
+		<img src="images/conversionTutorial/screenshot_04.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_05.png" onclick="openPreviewBox(this)">
+		<div class="seperator"></div>
+
+		<p><span class="instructionNumber">4</span>Import palette.</p>
+		<img src="images/conversionTutorial/screenshot_06.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_07.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_08.png" onclick="openPreviewBox(this)">
+		<p>You can rename the palette by double-clicking it.</p>
+		<img src="images/conversionTutorial/screenshot_09.png" onclick="openPreviewBox(this)">
+		<p>Close the palette image.</p>
+		<p>Once the palette is imported, it can be used whenever you reopen GIMP. You do not need to repeat steps 1-4 again.</p>
+		<div class="seperator"></div>
+
+		<p><span class="instructionNumber">5</span>Create a new 128x128 image.</p>
+		<img src="images/conversionTutorial/screenshot_10.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_11.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_12.png" onclick="openPreviewBox(this)">
+		<div class="seperator"></div>
+
+		<p><span class="instructionNumber">6</span>Copy and paste an image of your choice into GIMP, resizing it as you wish.</p>
+		<img src="images/conversionTutorial/screenshot_13.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_14.png" onclick="openPreviewBox(this)">
+		<div class="seperator"></div>
+
+		<p><span class="instructionNumber">7</span>Change the colour mode to Indexed.</p>
+		<img src="images/conversionTutorial/screenshot_15.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_16.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_17.png" onclick="openPreviewBox(this)">
+		<p>The dithering mode will change how the final map looks. Use 'None' for pixel art, and any of the others for photographs/paintings/etc.</p>
+		<img src="images/conversionTutorial/screenshot_18.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_19.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/examples.png" style="max-height: none; max-width: 100%" onclick="openPreviewBox(this)">
+		<div class="seperator"></div>
+
+		<p><span class="instructionNumber">8</span>Export as png.</p>
+		<img src="images/conversionTutorial/screenshot_20.png" onclick="openPreviewBox(this)">
+		<img src="images/conversionTutorial/screenshot_21.png" onclick="openPreviewBox(this)">
+		<div class="seperator"></div>
+
+		<h1>Done!</h1>
+	</div>
+	-->
+
+
+	<!-- ============= BLOCK SELECTOR ============= -->
+	<h1 class="header">3: Block Selector</h1>
+	<p>A single colour can represent many blocks.</p>
+	<p>The default selected are roughly the cheapest/easiest to harvest/produce en-masse.</p>
+	<p>You can change which block to use for each colour depending on the resources available to you in your world.</p>
+	<div id="blockSelectorList" class="accordion" style="height: 500px; overflow-y: scroll;">
+		<!--
+		<div class="blockRow">
+			<div class="colour" style="background-color: #7fb238; width: 20px"></div>
+			<div class="colour" style="background-color: #6d9930; width: 60px"></div>
+			<div class="colour" style="background-color: #597d27; width: 20px"></div>
+			<p>GRASS</p>
+			<div class="blockScroll">
+				<div style="width: 1000px">
+					<div class="block selected"><img src="images/block.png"><p>1</p></div>
+					<div class="block"><img src="images/block.png"><p>2</p></div>
+				</div>
+			</div>
+		</div>
+		<div class="floatClear"></div>
+		-->
+	</div>
+	<button id="button_setDefaultSelected" style="margin: auto; display: block; margin-top: 20px" onclick="setDefaultSelected()">Reset to defaults</button>
+	<div class="seperator2"></div>
+
+
+	<!-- ============= MAIN CANVAS ============= -->
+	<h1 class="header">4: Blueprint</h1>
+	<img src="images/blocks/unknown.png" id="icon_unknown" style="height: 0; margin: 0px; padding: 0px;">
+	<img src="images/icons/icon_plus.png" id="icon_plus" style="height: 0; margin: 0px; padding: 0px;">
+	<img src="images/icons/icon_dot.png" id="icon_dot" style="height: 0; margin: 0px; padding: 0px;">
+	<img src="images/icons/icon_minus.png" id="icon_minus" style="height: 0; margin: 0px; padding: 0px;">
+	<img src="images/icons/icon_1.png" id="icon_1" style="height: 0; margin: 0px; padding: 0px;">
+	<img src="images/icons/icon_5.png" id="icon_5" style="height: 0; margin: 0px; padding: 0px;">
+	<img src="images/icons/icon_10.png" id="icon_10" style="height: 0; margin: 0px; padding: 0px;">
+
+	<img src="images/block_up.png" style="float: left; width: 33%; cursor: pointer" onclick="openPreviewBox(this)">
+	<img src="images/block_flat.png" style="float: left; width: 33%; cursor: pointer" onclick="openPreviewBox(this)">
+	<img src="images/block_down.png" style="float: left; width: 33%; cursor: pointer" onclick="openPreviewBox(this)">
+
+	<div style="width:300px; margin:auto; margin-bottom:20px; padding: 0px; display:block;">
+		<input id="columnNumInput" type="number" min="1" max="128" value="1" style="float:left; font-size:22px; margin:auto; display:inline-block; margin-top: 8px">
+		<button id="button_loadColumn" style="float:right; display:inline-block; margin: auto;" onclick="renderSingleColumn()" disabled="true">Render column</button>
+		<div style="clear:both;"></div>
+	</div>
+	<div style="width:500px; margin:auto; margin-bottom:20px; padding: 0px; display:block;">
+		<p style="float: left">Width</p>
+		<input id="number_cropX" type="number" min="1" max="128" value="128" style="float:left; font-size:22px; margin: 5px; display:inline-block; margin-top: 8px; width: 50px">
+		<p style="float: left">Height</p>
+		<input id="number_cropY" type="number" min="1" max="128" value="128" style="float:left; font-size:22px; margin: 5px; display:inline-block; margin-top: 8px; width: 50px">
+		<button id="button_renderMap" style="margin:auto; display:block; margin-bottom:20px; float: left" onclick="renderColumns(0,128)" disabled="true">Render Section</button>
+	</div>
+	<p style="font-size: 14px; margin-top: -15px">(This may take some time to render)</p>
+	
+	<div id="shoppingList" class="accordion" style="height: 300px; overflow-y: scroll;">
+		<!--
+		<div class="shoppingListItem">
+			<img src="images/blocks/oak_planks.png">
+			<p>Oak planks</p>
+			<p>1066</p>
+			<p class="stacks">16 stacks + 42</p>
+		</div>
+		-->
+	</div>
+
+	<div style="width: 100%; overflow-x: scroll; overflow-y: hidden">
+		<canvas id="largeCanvas" width="2048" height="2048" style="background-image: url(images/default.png); image-rendering: pixelated;"></canvas>
+	</div>
+</div>
+
+</body>
+</html>

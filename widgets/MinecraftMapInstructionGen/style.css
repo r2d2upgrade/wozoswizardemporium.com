@@ -1,0 +1,474 @@
+body {
+	background-color: #143677;
+	padding: 0px;
+	margin: 0px;
+}
+
+#title {
+	height: 400px;
+	width: 100%;
+	margin: 0;
+	margin-top: -8px;
+	padding: 0; 
+	background-image: url('images/blueprint_light.png');
+	box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.6);
+	z-index: 100 !important;
+	position: absolute;
+}
+
+#content {
+	background-color: #444455;
+	background-image: url("images/blueprint.png");
+	background-size: 100px;
+	margin: auto;
+	max-width: 900px;
+	margin-top: 0px;
+	margin-bottom: 30px;
+	width: 100%;
+	padding-top: 410px;
+	padding-bottom: 10px;
+	box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.6);
+}
+
+h1 {
+	color: #ffffff;
+	margin: 20px;
+	text-align: center;
+	font-family: helvetica;
+	text-shadow: 0px 5px rgba(0,0,0,0.7);
+	font-size: 30px;
+}
+
+a {
+	color: #4dddf1;
+	text-decoration: none;
+	border-radius: 15px;
+	background-color: #444455;
+	padding: 4px;
+	border-style: none;
+	border-width: 3px;
+	border-color: #4dddf1;
+}
+a:hover {
+	color: #444455;
+	background-color: #ffffff;
+	border-color: #ffffff;
+}
+a:active {
+	color: #444455;
+	background-color: #ffffff;
+	border-color: #ffffff;
+}
+a:visited {
+
+}
+
+.header {
+	background-image: url("images/banner.png");
+	background-repeat: no-repeat;
+	background-position: center; 
+	height: 70px;
+	width: 100%;
+	margin: 10px;
+	margin-left: 0px;
+	margin-right: 0px;
+	line-height: 65px;
+	text-shadow: 0px 2px rgba(0,0,0,0.7);
+}
+
+p {
+	color: #ffffff;
+	font-family: helvetica;
+	font-size: 18px;
+	text-align: center;
+}
+
+.instructionNumber {
+	font-size: 29px;
+	color: #7777bb;
+	font-family: helvetica;
+	font-weight: bold;
+	margin-right: 20px;
+}
+
+img {
+	margin: auto;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	display: block;
+	max-height: 260px;
+}
+
+button {
+	background-color: #444455;
+	border-style: solid;
+	border-width: 3px;
+	border-color: #4dddf1;
+	color: #4dddf1;
+	font-family: helvetica;
+	font-size: 20px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+button:hover {
+	color: #444455;
+	background-color: #ffffff;
+	border-color: #ffffff;
+}
+button:disabled {
+	color: #444455;
+	background-color: #333344;
+	border-color: #444455;
+	cursor: default;
+}
+
+#smallCanvas {
+	margin: auto;
+	display: block;
+}
+
+.floatClear {
+	clear: both;
+	margin: 0px;
+	padding: 0px;
+	line-height: 0px;
+
+}
+
+/* ======== INPUT FILE ========*/
+.image-upload-btn-wrapper {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+	cursor: pointer;
+  }
+  
+  .image-upload-btn {
+	color: #444455;
+	background-color: #4dddf1;
+	font-weight: 700;
+	font-size: 20px;
+	border-radius: 5px;
+	padding: 5px 8px;
+	font-weight: bold;
+	cursor: pointer;
+  }
+  
+  .image-upload-btn-wrapper input[type=file] {
+	font-size: 100px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+	cursor: pointer;
+  }
+
+/* ======== ACCORDION ========*/
+.accordionButton {
+	color:#ff7f27;
+}
+.accordionButton:hover {
+	color:#444455;
+	background-color:#ff7f27;
+	border-radius: 5px;
+	cursor: pointer;
+	user-select: none;
+}
+
+.accordion {
+	background-color: #333344;
+	background-image: url("images/blueprint_dark.png");
+	margin: 0px;
+	width: 100%;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	height: 0px;
+	-webkit-transition-duration: 1s;
+	-moz-transition-duration: 1s;
+    -o-transition-duration: 1s;
+    transition-duration: 1s;
+    box-shadow: inset 0px 0px 15px 0px rgba(0,0,0,0.6);
+}
+.accordion img {
+	cursor: pointer;
+}
+
+/* ======== SEPERATOR ========*/
+.seperator {
+	height: 1px;
+	margin: auto;
+	width: 80%;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border-bottom: 1px solid rgba(255,255,255,1);
+	clear: both;
+}
+.seperator2 {
+	height: 8px;
+	margin: auto;
+	width: 90%;
+	margin-top: 45px;
+	margin-bottom: 35px;
+	background-image: url("images/seperator.png");
+	clear: both;
+}
+
+/* ======== IMAGE PREVIEW BOX ========*/
+#imagePreviewBox {
+	position: fixed;
+	background-color: rgba(0,0,0,0.8);
+	width: 100%;
+	height: calc(100% + 30px);
+	margin: 0px;
+	padding: 0px;
+	display: none;
+	margin-top: -30px;
+	z-index: 1000;
+}
+#imagePreviewBox img {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: auto;
+	height: auto;
+	max-height: 90%;
+	max-width: 100%;
+}
+
+/* ======== BLOCK ROW ========*/
+.blockRow {
+	width: 100%;
+	margin: 0px;
+	height: 140px;
+	display: block;
+	padding: 0px;
+	/*border-bottom:2px solid rgba(0,0,0,.25);*/
+	margin-bottom: 3px;
+}
+
+.blockRow .colour {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	float: left;
+}
+
+.blockRow .colour p {
+	transform-origin: 0 20px;
+	transform: rotate(90deg);
+	text-transform: uppercase;
+	text-shadow: 0px 2px 4px #000000;
+	user-select: default;
+	color: white;
+}
+
+.blockRow p {
+	width: 100px;
+	float: left;
+	height: 100%;
+	font-size: 17px;
+	margin: 0px;
+	padding: 0px;
+	word-wrap: break-word;
+	display: block;
+	user-select: none;
+}
+
+.blockRow .blockScroll { /*Where all the block options to select go*/
+	width: calc(100% - 200px);
+	overflow-x: scroll;
+	overflow-y: hidden;
+	height: 100%;
+}
+
+.blockRow .blockScroll .block { /* A single option */
+	width: 64px;
+	height: 100%;
+	float: left;
+	cursor: pointer;
+	border: 2px solid rgba(0,0,0,0);
+	z-index: 0 !important;
+	display: block;
+}
+
+.blockRow .blockScroll .block img { /* The block image */
+	width: 100%;
+	height: 64px;
+	margin: 0px;
+	image-rendering: pixelated;
+	clear: both;
+	/*background-image: url("images/blocks/unknown.png");*/
+	background-size: 100%;
+	user-select: none;
+}
+
+.blockRow .blockScroll .block p { /* The block name */
+	width: 100%;
+	height: 50px;
+	text-align: left;
+	font-size: 12px;
+	font-weight: bold;
+	overflow: hidden;
+	margin: 0px;
+	padding: 0px;
+	word-wrap: break-word;
+	display: block;
+	user-select: none;
+}
+
+.selected {
+	background-color: #ff7f27;
+	margin: 0px;
+	border: 2px solid #ff7f27;
+	z-index: 10 !important;
+}
+
+.selected p {
+	color: #444455;
+}
+
+
+/* ======== SCROLLBAR ========*/
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: none; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+  background: #4dddf1;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff; 
+}
+
+
+/* ======== SLIDER ========*/
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 16px;
+  border-radius: 8px;
+  background: #222233;
+  outline: none;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover::-webkit-slider-thumb {
+  background: #ffffff; 
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 25px;
+  background: #4dddf1;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+#sliders {
+	float: left;
+	width: calc(100% - 200px);
+}
+
+#sliders p {
+	float: left;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	margin-right: 10px;
+	width: 60px;
+	font-size: 15px;
+}
+
+#sliders .slider {
+	width: calc(100% - 140px);
+	float: left;
+}
+
+#sliders .input {
+	width: 40px;
+	margin-left: 10px;
+}
+
+
+/* ======== SHOPPING LIST ========*/
+
+.shoppingListItem {
+	width: 100%;
+	margin: 0px;
+	height: 64px;
+	display: block;
+	padding: 0px;
+	margin-bottom: 3px;
+}
+
+.shoppingListItem img {
+	height: 100%;
+	image-rendering: pixelated;
+	float: left;
+	margin: 0px;
+}
+
+.shoppingListItem p {
+	width: 100px;
+	float: left;
+	height: 100%;
+	font-size: 17px;
+	margin: 0px;
+	margin-left: 5px;
+	padding: 0px;
+	word-wrap: break-word;
+	display: block;
+	user-select: none;
+}
+
+.shoppingListItem .stacks {
+	width: auto;
+}
+
+
+/* ======== TOGGLE ========*/
+.toggle {
+	background-color: #444455;
+	border-style: solid;
+	border-width: 3px;
+	border-color: #4dddf1;
+	color: #4dddf1;
+	font-family: helvetica;
+	font-size: 16px !important;
+	padding: 10px !important;
+	cursor: pointer;
+	border-radius: 25px;
+	width: auto !important;
+	user-select: none;
+}
+.toggle.active {
+	color: #444455;
+	background-color: #ffffff;
+	border-color: #ffffff;
+}
