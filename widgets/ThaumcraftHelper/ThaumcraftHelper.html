@@ -1,0 +1,619 @@
+<!DOCTYPE HTML>
+<html>
+
+<!-- ======================HEAD====================== -->
+<head>
+	<title>Thaumcraft Research Helper</title>
+
+	<meta name="Keywords" content="Thaumcraft Research Helper">
+	<meta name="Description" content="Thaumcraft Research Helper">
+
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="mobileFirst.css">
+	<link rel="stylesheet" type="text/css" media="only screen and (min-width:601px)" href="main.css">
+
+<script src="Aspects-5.js"></script>
+<script>
+function init() {
+	console.info("DOM ready");
+
+	/* ADD BUTTON FUNCTION */
+	function addButton(addName, addMeaning) {
+		var buttonsNode = document.getElementById('aspectButtons'); /* Where all the buttons go */
+
+		var buttonNode = document.createElement('div'); /* Aspect button */
+		buttonNode.className = "aspectButton";
+		buttonNode.setAttribute("data-enabled", "true");
+		buttonNode.setAttribute("data-selected", "false");
+
+		/* ASPECT */
+		var aspectNode = document.createElement('div'); /* Aspect section */
+		aspectNode.className = "aspect";
+		aspectNode.addEventListener("click", function(){aspectButtonSelectToggle(this);});
+		var imgNode = document.createElement('img'); /* Aspect image */
+		var imageFile = "aspects/"+addName+".png"
+		imgNode.src = imageFile;
+		var aspectH1Node = document.createElement('h1'); /* Aspect name */
+		aspectH1Node.innerHTML = addName;
+		var aspectPNode = document.createElement('p'); /* Aspect alternate name */
+		aspectPNode.innerHTML = addMeaning;
+
+		/* SIDE BUTTONS */
+		var sideButtonsNode = document.createElement('div'); /* Side buttons section */
+		sideButtonsNode.className = "sideButtons";
+
+		var sideButtonNode1 = document.createElement('div'); /* Side button DISABLE*/
+		sideButtonNode1.className = "sideButton";
+		sideButtonNode1.addEventListener("click", function(){aspectButtonToggle(this);});
+		/*sideButtonNode1.setAttribute("onClick", "aspectButtonDisable(this);")*/
+		var sideButtonPNode1 = document.createElement('p'); /* Side button text */
+		sideButtonPNode1.innerHTML = "Disable";
+
+		var sideButtonNode2 = document.createElement('div'); /* Side button TREE*/
+		sideButtonNode2.className = "sideButton";
+		sideButtonNode2.addEventListener("click", function(){drawTree(addName);});
+		var sideButtonPNode2 = document.createElement('p'); /* Side button text */
+		sideButtonPNode2.innerHTML = "Tree";
+
+		/* Add content to aspect section*/
+		aspectNode.appendChild(imgNode);
+		aspectNode.appendChild(aspectH1Node);
+		aspectNode.appendChild(aspectPNode);
+
+		/* Add aspect section to button */
+		buttonNode.appendChild(aspectNode);
+
+		/* Add text to side buttons and add buttons to section */
+		sideButtonNode1.appendChild(sideButtonPNode1);
+		sideButtonNode2.appendChild(sideButtonPNode2);
+		sideButtonsNode.appendChild(sideButtonNode1);
+		sideButtonsNode.appendChild(sideButtonNode2);
+
+		/* Add side buttons section to button */
+		buttonNode.appendChild(sideButtonsNode)
+
+		/* Add button to list of buttons */
+		buttonsNode.appendChild(buttonNode);
+	}
+	/* ADD THE BUTTONS TO THE PAGE */
+	for (var buttoni=0; buttoni<Aspects.length; buttoni++) {
+		addButton(Aspects[buttoni].name, Aspects[buttoni].meaning);
+	}
+
+	/* ADD CHILDREN */
+	function addChildren() {
+
+		for (var i = 0; i < Aspects.length; i++) {
+			Aspects[i]['children'] = [];
+		}
+
+		var parentName = "";
+		var parentPos = 0;
+
+		//For each parent an aspect has, it pushes itself into the parent's child array
+		for (var i = 0; i < Aspects.length; i++) { //i = current aspect
+			var parentsLength = Aspects[i].parents.length; //How many parents?
+			if (parentsLength > 0) {
+				for (var j = 0; j < parentsLength; j++) { //j = current parent string
+					parentName = Aspects[i].parents[j];
+					parentPos = findAspectPosition(parentName);
+
+					Aspects[parentPos].children.push(Aspects[i].name);
+				}
+			}
+		}
+	}
+	addChildren();
+
+	/* ADD ASPECT COORDINATES */
+	function addAspectCoordinates() {
+		for (var i = 0; i < Aspects.length; i++) {
+			Aspects[i]['x'] = 0;
+			Aspects[i]['y'] = 0;
+		}
+	}
+	addAspectCoordinates();
+
+	drawMap([]);
+	drawTreeBackground()
+}
+
+/* DISABLE BUTTON */
+function aspectButtonToggle(disableButton) {
+	var aspectButton = disableButton.parentNode.parentNode;
+	if (aspectButton.getAttribute("data-enabled") == "false") {
+		//ENABLE
+		disableButton.innerHTML = "<p>Disable</p>";
+		aspectButton.setAttribute("data-enabled", "true");
+		aspectButton.classList.remove("disabled");
+	}
+	else {
+		//DISABLE
+		disableButton.innerHTML = "<p>Enable</p>";
+		aspectButton.setAttribute("data-enabled", "false");
+		aspectButton.classList.add("disabled");
+
+		//DESELECT
+		aspectButton.setAttribute("data-selected", "false");
+		aspectButton.classList.remove("selected");
+		}
+	drawMap([]);
+}
+/* SELECT BUTTON */
+function aspectButtonSelectToggle(selectButton) {
+	var aspectButton = selectButton.parentNode;
+	if ((aspectButton.getAttribute("data-selected") == "false") & (aspectButton.getAttribute("data-enabled") == "true")) {
+		//SELECT
+		aspectButton.setAttribute("data-selected", "true");
+		aspectButton.classList.add("selected");
+	}
+	else {
+		//DESELECT
+		aspectButton.setAttribute("data-selected", "false");
+		aspectButton.classList.remove("selected");
+	}
+		//console.info(findSelected());
+}
+
+/* ENABLE ALL BUTTONS */
+function enableAllAspects() {
+	hideError();
+	var button = document.getElementById("aspectButtons");
+	for (i = 0; i < button.children.length; i++) {
+		//Enable All
+		button.children[i].setAttribute("data-enabled", "true");
+		button.children[i].children[1].children[0].innerHTML = "<p>Disable</p>";
+		button.children[i].classList.remove("disabled");
+
+		//Deselect All
+		button.children[i].setAttribute("data-selected", "false");
+		button.children[i].classList.remove("selected");
+	}
+	drawMap([]);
+}
+
+/* FIND DISABLED ASPECTS */
+function findForbidden() {
+	var list = document.getElementById("aspectButtons").children;
+	var forbiddenList = [];
+	for (i = 0; i < list.length; i++) {
+		forbiddenList.push(list[i].getAttribute("data-enabled") == "true");
+		//Forbidden list, each one in the list is true/false, depending on whether the button is enabled or disabled
+	}
+	return forbiddenList;
+}
+
+/* FIND SELECTED ASPECTS */
+function findSelected() {
+	var list = document.getElementById("aspectButtons").children;
+	var selectedList = [];
+	for (i = 0; i < list.length; i++) {
+		if (list[i].getAttribute("data-selected") == "true") selectedList.push(i);
+		//Selected list, a list of the IDs of the aspects that are selected
+	}
+	return selectedList;
+}
+
+/* FIND PATH */
+function findPath(startAspect, endAspect) {
+	var startAspectPos = findAspectPosition(startAspect);
+	var endAspectPos = findAspectPosition(endAspect);
+	var Queue = []; //List of positions
+	var forbiddenList = findForbidden(); //Aspects that are enabled/disabled
+
+	// INITIALISE NODES
+	var Nodes = [];
+	for (var nodei = 0; nodei < Aspects.length; nodei++) {
+		Nodes[nodei] = {
+			'visited' : 0,
+			'distance' : 0,
+			'path' : []
+		};
+	}
+
+	var found = false; //Have we found the end node?
+
+	Nodes[startAspectPos].visited = 1; //Set that aspect's visited to 1 (in queue)
+	Queue.push(startAspectPos); //Add that aspect ID to the queue
+	Nodes[startAspectPos].path.push(startAspectPos); //Push aspect to its own path
+
+	while (Queue.length > 0 && found == false) {
+		var temp = Queue.shift(); //Position
+		if (temp == endAspectPos) {
+			found = true;
+		}
+		else {
+			//Parents
+			for (var tempParenti = 0; tempParenti < Aspects[temp].parents.length; ++tempParenti) {
+				var tempParentPos = findAspectPosition(Aspects[temp].parents[tempParenti]);
+				if (Nodes[tempParentPos].visited == 0 && forbiddenList[tempParentPos] == true) {
+					Queue.push(tempParentPos); //Add parent to queue
+					Nodes[tempParentPos].visited = 1; //Make sure it isnt checked and added again
+					Nodes[tempParentPos].path = JSON.parse(JSON.stringify(Nodes[temp].path)); //Copy the array instead of a pointer to the array
+					Nodes[tempParentPos].path.push(tempParentPos); //Push the parent to its own path
+					Nodes[tempParentPos].distance = Nodes[temp].distance + 1; //Set the parent distance to the current distance + 1
+				}
+			}
+			//Children
+			for (var tempChildreni = 0; tempChildreni < Aspects[temp].children.length; ++tempChildreni) {
+				var tempChildrenPos = findAspectPosition(Aspects[temp].children[tempChildreni]);
+				if (Nodes[tempChildrenPos].visited == 0 && forbiddenList[tempChildrenPos] == true) {
+					Queue.push(tempChildrenPos);
+					Nodes[tempChildrenPos].visited = 1;
+					Nodes[tempChildrenPos].path = JSON.parse(JSON.stringify(Nodes[temp].path));
+					Nodes[tempChildrenPos].path.push(tempChildrenPos);
+					Nodes[tempChildrenPos].distance = Nodes[temp].distance + 1;
+				}
+			}
+			Nodes[temp].visited = 2; //This node is checked
+		}
+	}
+
+	if (found == true) {
+		return(Nodes[endAspectPos].path);
+	}
+	else{
+		return([]);
+	}
+}
+
+function findPathComplete() {
+	selectedList = findSelected();
+	if (selectedList.length != 2) { //If the user hasnt selected only 2 aspects
+		showError("Select 2 aspects.");
+	}
+	else {
+		hideError();
+		var startAspectID = selectedList[0]; //Start aspect
+		var endAspectID = selectedList[1]; //End aspect
+		var finalPath = findPath(Aspects[selectedList[0]].name, Aspects[selectedList[1]].name); //Final path
+		if (finalPath == []) showError("No path found."); //If no path is found
+		drawMap(finalPath);
+		drawPath(finalPath);
+	}
+}
+
+/* DRAW */
+function drawArc(drawArcCanvas, drawArcX, drawArcY, drawArcRadius, drawArcStartAngle, drawArcEndAngle, drawArcAntiClockwise, drawArcLineWidth, drawArcLineColour, drawArcFillColour) {
+	//function drawArc(canvas, x, y, radius, startAngle, endAngle, antiClockwise, lineWidth, lineColour, fillColour);
+	drawArcCanvas = document.getElementById(drawArcCanvas);
+    drawArcContext = drawArcCanvas.getContext('2d');
+
+    drawArcContext.beginPath();
+    drawArcContext.arc(drawArcX, drawArcY, drawArcRadius, drawArcStartAngle, drawArcEndAngle, drawArcAntiClockwise);
+    if (drawArcLineWidth == 0) {
+    	drawArcContext.fillStyle = drawArcFillColour;
+    	drawArcContext.fill();
+    }
+    if (drawArcLineWidth > 0) {
+	    drawArcContext.lineWidth = drawArcLineWidth;
+	    drawArcContext.strokeStyle = drawArcLineColour;
+	    drawArcContext.stroke();
+	}
+    //drawArcContext.endPath();
+}
+function drawRectangle(drawRectCanvas, drawRectX1, drawRectY1, drawRectX2, drawRectY2, drawRectLineWidth, drawRectLineColour, drawRectFillColour) {
+	//function drawRectangle(canvas, x1, y1, x2, y2, lineWidth, lineColour, fillColour);
+	drawRectCanvas = document.getElementById(drawRectCanvas);
+    drawRectContext = drawRectCanvas.getContext('2d');
+
+    drawRectContext.beginPath();
+    drawRectContext.rect(drawRectX1, drawRectY1, drawRectX2, drawRectY2);
+    drawRectContext.fillStyle = drawRectFillColour;
+    drawRectContext.fill();
+    if (drawRectLineWidth > 0) {
+	    drawRectContext.lineWidth = drawRectLineWidth;
+	    drawRectContext.strokeStyle = drawRectLineColour;
+	    drawRectContext.stroke();
+	}
+    //drawRectContext.endPath();
+}
+function drawLine(drawLineCanvas, drawLineX1, drawLineY1, drawLineX2, drawLineY2, drawLineWidth, drawLineColour) {
+	//function drawLine(canvas, x1, y1, x2, y2, lineWidth, lineColour);
+	drawLineCanvas = document.getElementById(drawLineCanvas);
+    drawLineContext = drawLineCanvas.getContext('2d');
+
+    drawLineContext.beginPath();
+    drawLineContext.moveTo(drawLineX1, drawLineY1);
+    drawLineContext.lineTo(drawLineX2, drawLineY2);
+    drawLineContext.closePath();
+
+    drawLineContext.lineWidth = drawLineWidth;
+    drawLineContext.strokeStyle = drawLineColour;
+    drawLineContext.stroke();
+}
+function drawImage(drawImageCanvas, drawImageX, drawImageY, drawImagePath) {
+	//drawImage(canvas, x, y, image);
+	drawImageCanvas = document.getElementById(drawImageCanvas);
+    drawImageContext = drawImageCanvas.getContext('2d');
+
+    var img = new Image();
+	img.onload = function () {
+    	drawImageContext.drawImage(img, drawImageX, drawImageY);
+	}
+	img.src = drawImagePath;
+}
+function drawText(drawTextCanvas, drawText, drawTextX, drawTextY, drawTextFont, drawTextAlign, drawTextColour) {
+	drawTextCanvas = document.getElementById(drawTextCanvas);
+    drawTextContext = drawTextCanvas.getContext('2d');
+
+    drawTextContext.font = drawTextFont;
+    drawTextContext.fillStyle = drawTextColour;
+	drawTextContext.textAlign = drawTextAlign;
+    drawTextContext.fillText(drawText, drawTextX, drawTextY);
+}
+
+function drawMap(pathList) {
+	//Draw rings
+	drawRectangle('mapCanvas', 0, 0, 650, 650, 0, '#000', '#000');
+
+	var mapRadiusStart = 40;
+	var mapRadiusInterval = 45;
+	var centerX = 325;
+	var centerY = 325;
+
+	var mapColours = ['#e947ed','#d52bd5','#9e2e9b','#772274','#50164e','#280b27'];
+
+	for (var mapi = 6; mapi > 0; --mapi) {
+		drawArc('mapCanvas', centerX, centerY, mapRadiusStart + (mapi * mapRadiusInterval), 0, 2*Math.PI, false, 0, '#000', mapColours[mapi - 1]);
+	}
+
+	//Sort aspects into tiers
+	var mapTiers = [];
+	for (var mapi = 0; mapi < 6; ++mapi) { //Add empty arrays to each tier
+		mapTiers[mapi] = [];
+	}
+	for (var mapi = 0; mapi < Aspects.length; ++mapi) { //Add aspect positions to each tier
+		mapTiers[Aspects[mapi].tier].push(mapi);
+	}
+
+	//Find aspect coords
+	for (var mapi = 0; mapi < mapTiers.length; ++mapi) { //mapi = tier, mapj = aspect in tier
+		var mapTierLength = mapTiers[mapi].length; //How many aspects in this tier?
+		var mapTierAngleChange = 360 / mapTierLength; //Angle change around the ring
+
+		for (var mapj = 0; mapj < mapTiers[mapi].length; ++mapj) {
+			Aspects[mapTiers[mapi][mapj]].x = centerX + ((mapRadiusStart + (mapi * mapRadiusInterval) + (mapRadiusInterval/2)) * Math.cos(((mapTierAngleChange*mapj)+90 + (mapTierAngleChange / 2 * (mapi % 2)))/180 * Math.PI));
+			Aspects[mapTiers[mapi][mapj]].y = centerY - ((mapRadiusStart + (mapi * mapRadiusInterval) + (mapRadiusInterval/2)) * Math.sin(((mapTierAngleChange*mapj)+90 + (mapTierAngleChange / 2 * (mapi % 2)))/180 * Math.PI));
+
+			//drawArc('mapCanvas', tempX, tempY, 2, 0, 2*Math.PI, false, 0, '#000', '#000'); //Show coords
+		}
+	}
+
+	var forbiddenList = findForbidden();
+	//Draw lines
+	if (pathList.length > 0) {
+		drawArc('mapCanvas', Aspects[pathList[0]].x, Aspects[pathList[0]].y, 20, 0, 2*Math.PI, false, 3, '#fff', '#000');
+		for (var pathListi = 1; pathListi < pathList.length; pathListi++) {
+			drawLine('mapCanvas', Aspects[pathList[pathListi]].x, Aspects[pathList[pathListi]].y, Aspects[pathList[pathListi-1]].x, Aspects[pathList[pathListi-1]].y, 1, '#000000');
+			drawArc('mapCanvas', Aspects[pathList[pathListi]].x, Aspects[pathList[pathListi]].y, 20, 0, 2*Math.PI, false, 3, '#fff', '#000');
+		}
+	}
+	
+
+
+	//Draw images
+	for (var mapi = 0; mapi < Aspects.length; ++mapi) {
+		if (forbiddenList[mapi] == true) {
+			drawImage('mapCanvas', Aspects[mapi].x - 16, Aspects[mapi].y - 16, "aspects/" + Aspects[mapi].name + ".png");
+			drawText('mapCanvas', Aspects[mapi].name, Aspects[mapi].x, Aspects[mapi].y + 24, "10px Arial", "center", "#000000");
+			drawText('mapCanvas', Aspects[mapi].name, Aspects[mapi].x, Aspects[mapi].y + 22, "10px Arial", "center", "#000000");
+			drawText('mapCanvas', Aspects[mapi].name, Aspects[mapi].x+1, Aspects[mapi].y + 23, "10px Arial", "center", "#000000");
+			drawText('mapCanvas', Aspects[mapi].name, Aspects[mapi].x-1, Aspects[mapi].y + 23, "10px Arial", "center", "#000000");
+			drawText('mapCanvas', Aspects[mapi].name, Aspects[mapi].x, Aspects[mapi].y + 23, "10px Arial", "center", "#ffffff");
+		}
+	}
+}
+function drawPath(pathList) {
+	var startX = 40;
+	var startY = 650-(32+20);
+	if (pathList.length > 0) {
+		for (var drawPathi = 0; drawPathi < pathList.length; drawPathi++) {
+			var pathTempX = startX + (64 * drawPathi);
+			drawImage('mapCanvas', pathTempX, startY, "aspects/" + Aspects[pathList[drawPathi]].name + ".png");
+			drawText('mapCanvas', Aspects[pathList[drawPathi]].name, pathTempX + 16, startY + 39, "10px Arial", "center", "#e947ed");
+			if (drawPathi < pathList.length - 1) drawText('mapCanvas', "~", pathTempX + 48, startY + 24, "30px Arial", "center", "#ffffff");
+		}
+	}
+}
+
+/* ASPECT TREE */
+function drawTree(treeAspect) {
+	var AspectTree = [
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	];
+
+	//CALCULATE TREE
+	var AspectQueue = [];
+	AspectQueue.push({"pos":findAspectPosition(treeAspect), "x":0, "y":0, "drawTo":[]});
+	//Pos = position in aspect array
+	//x,y = coords on tree canvas
+	//drawTo = which aspects it draws a line to
+		//a,b = position in aspectTree array
+	while (AspectQueue.length > 0) {
+		var temp = AspectQueue.shift(); //Current aspect position
+	//console.info(temp.pos);
+		if (Aspects[temp.pos].parents.length > 0) { //If it has parents
+			//AspectQueue.push(findAspectPosition(Aspects[temp].parents[0]));
+			var tempDrawTo = [];
+			for (var parenti = 0; parenti < Aspects[temp.pos].parents.length; ++parenti) {
+				tempDrawTo.push({"a":Aspects[temp.pos].tier, "b":AspectTree[Aspects[temp.pos].tier].length});
+				AspectQueue.push( {"pos":findAspectPosition(Aspects[temp.pos].parents[parenti]), "x":0, "y":0, "drawTo":tempDrawTo} );
+
+			}
+		}
+		AspectTree[Aspects[temp.pos].tier].push(temp);
+	//console.info(AspectQueue);
+	}
+	//console.info(AspectTree);
+
+
+	var treeCanvasHeight = 650;
+	var treeCanvasWidth = 300;
+	var treeCanvasTierWidth = 230;
+	var treeTierHeight = treeCanvasHeight/6;
+	//CALCULATE TREE COORDS
+	var tempDirection = 0;
+	for (var treei = 0; treei < 6; treei++) {
+		if (AspectTree[treei].length > 0) {
+			for (var treej = 0; treej < AspectTree[treei].length; treej++) {
+				AspectTree[treei][treej].x = ((treeCanvasWidth-treeCanvasTierWidth)/2) + ((treeCanvasTierWidth/AspectTree[treei].length)*treej) + (tempDirection*(treeCanvasTierWidth/(AspectTree[treei].length*2)));
+				AspectTree[treei][treej].y = (treei * treeTierHeight) + (treeTierHeight/2);
+			}
+			if (tempDirection == 0) tempDirection = 1;
+			else tempDirection = 0;
+		}
+	}
+
+	//DRAW TREE
+	drawTreeBackground()
+
+	//DRAW LINES
+	for (var treei = 0; treei < 6; treei++) {
+		if (AspectTree[treei].length > 0) {
+			for (var treej = 0; treej < AspectTree[treei].length; treej++) {
+				for (var treek = 0; treek < AspectTree[treei][treej].drawTo.length; treek++) {
+					var tempDrawToA = AspectTree[treei][treej].drawTo[treek].a;
+					var tempDrawToB = AspectTree[treei][treej].drawTo[treek].b;
+
+					drawLine(
+						'treeCanvas',
+						AspectTree[treei][treej].x,
+						AspectTree[treei][treej].y,
+						AspectTree[tempDrawToA][tempDrawToB].x,
+						AspectTree[tempDrawToA][tempDrawToB].y,
+						2,
+						'#000000');
+				}
+			}
+		}
+	}
+
+	//DRAW IMAGES
+	for (var treei = 0; treei < 6; treei++) {
+		if (AspectTree[treei].length > 0) {
+			for (var treej = 0; treej < AspectTree[treei].length; treej++) {
+				drawImage('treeCanvas', AspectTree[treei][treej].x - 16, AspectTree[treei][treej].y - 16, "aspects/" + Aspects[AspectTree[treei][treej].pos].name + ".png");
+				drawText('treeCanvas', Aspects[AspectTree[treei][treej].pos].name, AspectTree[treei][treej].x, AspectTree[treei][treej].y + 23, "10px Arial", "center", "#ffffff");
+				//drawArc('treeCanvas',  AspectTree[treei][treej].x,  AspectTree[treei][treej].y, 3, 0, 360, 0, 0, '#000000', '#000000');
+			}
+		}
+	}
+}
+function drawTreeBackground() {
+	var treeColours = ['#f4a2f6', '#ef74f1', '#e947ed','#d52bd5','#9e2e9b','#772274','#50164e','#280b27'];
+	var treeCanvasHeight = 650;
+	var treeCanvasWidth = 300;
+	var treeTierHeight = treeCanvasHeight/6;
+
+	for (var treeCanvasi = 0; treeCanvasi < 6; treeCanvasi++){
+		drawRectangle('treeCanvas', 0, Math.round(treeTierHeight * treeCanvasi), treeCanvasWidth, Math.round(treeTierHeight * (treeCanvasi + 1)), 0, '#000000', treeColours[treeCanvasi+2]);
+		drawText('treeCanvas', "Tier " + treeCanvasi, 5, Math.round(treeTierHeight * treeCanvasi) + 20, "15px Arial", "left",  treeColours[treeCanvasi]);
+	}
+}
+
+/* FIND ASPECT POS */
+function findAspectPosition(aspectName) {
+	for(posi = 0; posi < Aspects.length; ++posi)
+	{
+		if (Aspects[posi].name == aspectName) {
+			return posi;
+		}
+	}
+	return -1;
+}
+
+/* ERROR POPUP */
+function showError(popupText) {
+    var popup = document.getElementById("errorPopup");
+    popup.innerHTML = popupText;
+    popup.classList.add("show");
+}
+function hideError() {
+	var popup = document.getElementById("errorPopup");
+    popup.classList.remove("show");
+}
+
+/* INSTRUCTIONS */
+function showInstructions() {
+    var greyBox = document.getElementById("instructions");
+    greyBox.classList.add("show");
+}
+function hideInstructions() {
+    var greyBox = document.getElementById("instructions");
+    greyBox.classList.remove("show");
+}
+
+</script>
+
+</head>
+
+<!-- ======================BODY====================== -->
+<body onload="init()">
+
+	<div id="content">
+
+		<h1 class='title'>Thaumcraft Research Helper</h1>
+
+		<!-- INSTRUCTIONS -->
+		<div class="greyBox" id="instructions" onClick="hideInstructions();">
+			<h1>Shortest Relation Between 2 Aspects</h1>
+			<p>Select 2 aspects by clicking on an aspect image, then 'Find Path'. Clicking 'disable' will remove that aspect from being included in the final path.</p>
+			<h1>Aspect Combination Tree</h1>
+			<p>Click on an aspect's 'Tree' button to display how to craft it from the primal aspects.</p>
+			<h1>Reset</h1>
+			<p>Clicking 'Reset' will enable and deselect all aspects.</p>
+			<br/>
+			<p style='text-align: center; color: #ce15d1;'>Click to close</p>
+		</div>
+
+		<!-- CANVASES -->
+		<div id="canvases">
+			<canvas id="mapCanvas" width="650" height="650"></canvas>
+			<canvas id="treeCanvas" width="300" height="650"></canvas>
+		</div>
+		<div style="clear: both" /> <!-- Clears float to keep stop 'canvases' from collapsing -->
+
+		<!-- ACTION BUTTONS -->
+		<div id="actionButtons">
+			<span class="popup" id="errorPopup">Please select 2 aspects.</span> <!-- Error message -->
+			<button class="actionButton" onClick="findPathComplete();">Find Path</button>
+			<button class="actionButton" onClick="enableAllAspects();">Reset</button>
+			<button class="actionButton" onClick="showInstructions();">Help</button>
+		</div>
+		<div style="clear: both" />
+
+		<!-- ASPECT BUTTONS -->
+		<div id="aspectButtons">
+
+			<!-- Aspect button blueprint
+			<div class="aspectButton">
+				<div class="aspect">
+					<img src="aer.png"/>
+					<h1>Terra</h1>
+					<p>Earth</p>
+				</div>
+				<div class="sideButtons">
+					<div class="sideButton" onClick="aspectButtonDisable(this);"><p>Disable</p></div>
+					<div class="sideButton"><p>Tree</p></div>
+				</div>
+			</div>
+			-->
+
+
+		</div>
+		<div style="clear: both" />
+	</div>
+
+</body>
+
+<!-- ======================FOOTER====================== -->
+<footer>
+</footer>
+
+</html>

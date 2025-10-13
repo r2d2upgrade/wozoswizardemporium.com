@@ -1,0 +1,216 @@
+/* ======================HEAD====================== */
+
+/* ======================BODY AND CONTENT====================== */
+body {
+	margin: 0px;
+	padding: 0px;
+
+	font-family:Helvetica, Arial, sans-serif;
+	font-size: 15px;
+	color: #545454;
+
+	background: #432f51;
+}
+
+#content {
+	padding: 20px;
+	margin: auto;
+	margin-top: 50px;
+
+	width: 1000px;
+
+	background: #352541;
+}
+
+.title {
+	color: #e947ed;
+	text-align: center;
+	display: block;
+}
+
+/* CANVASES */
+#canvases {
+	overflow: hidden;
+	margin: 10px;
+}
+
+#mapCanvas {
+	background-color: #000000;
+	float: left;
+	margin: 0px;
+}
+
+#treeCanvas {
+	background-color: #000000;
+	float: left;
+	margin: 0px;
+}
+
+/* ACTION BUTTONS */
+#actionButtons {
+	width: 70%;
+	height: 40px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+.actionButton {
+	display: block;
+	width: 200px;
+	height: 100%;
+	display: inline-block;
+	background-color: #281c31;
+	font-size: 16px;
+	text-align: center;
+	color: #e947ed;
+	margin: 0px 1px;
+	cursor: pointer;
+}
+
+.actionButton h1 {
+	font-size: 12px;
+	text-align: center;
+	color: #e947ed;
+	display: block;
+	margin: 0px;
+}
+
+
+/* ASPECT BUTTONS */
+#aspectButtons { /* The list of aspect buttons */
+	width: 90%;
+	margin: 0 auto;
+}
+
+.aspectButton { /* The aspect button */
+	float: left;
+	width: 150px;
+	height: 70px;
+	background-color: #1a1320;
+	margin: 10px;
+	border: 2px solid #ce15d1;
+	background-image: url("background.png");
+	background-size: 256px 256px;
+	user-select: none;
+}
+
+.aspectButton.disabled { /* Aspect button disabled */
+	border: 2px solid #000;
+	background-color: #000;
+	background-image: none;
+}
+
+.aspectButton.selected { /* Aspect button selected */
+	background-color: #fff;
+	background-image: none;
+}
+
+
+
+.aspectButton .aspect { /* Aspect section of button */
+	align-content: center;
+  	justify-content: center;
+  	width: 115px;
+  	float: left;
+}
+
+.aspectButton .aspect img { /* Aspect image */
+	width: 32px;
+	height: 32px;
+	display : block;
+    margin : auto;
+    margin-top: 5px;
+    align-self: center;
+}
+
+.aspectButton .aspect h1 { /* Aspect name */
+	font-size: 12px;
+	text-align: center;
+	color: #e947ed;
+	display: block;
+	margin: 0px;
+}
+
+.aspectButton .aspect p { /* Aspect alternate name */
+	font-size: 10px;
+	text-align: center;
+	color: #ce15d1;
+	display: block;
+	margin: 0px;
+}
+
+
+
+.aspectButton .sideButtons { /* Sidebuttons section */
+	width: 35px;
+	height: 70px;
+	float: right;
+}
+
+.aspectButton .sideButtons .sideButton { /* Sidebutton */
+	width: 35px;
+	height: 35px;
+	clear: left;
+	align-content: center;
+  	justify-content: center;
+  	background-color: #281c31;
+  	cursor: pointer;
+}
+
+.aspectButton .sideButtons .sideButton.rollover { /* Sidebutton rollover */
+  	background-color: #fff;
+}
+
+.aspectButton .sideButtons .sideButton p {
+	font-size: 10px;
+	text-align: center;
+	color: #ce15d1;
+	display: block;
+	margin: 0px;
+	padding-top: 10px;
+	vertical-align: center;
+}
+
+
+/* POPUP */
+.popup {
+	user-select: none;
+    visibility: hidden;
+    width: 200px;
+    background-color: #dd2e2e;
+    color: #fff;
+    text-align: center;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    margin-top: -35px;
+    margin-left: 0px;
+}
+
+/* Instructions */
+.greyBox {
+	user-select: none;
+    visibility: hidden;
+    width: 940px;
+    background-color: #111;
+    color: #fff;
+    padding: 30px;
+    position: fixed;
+    z-index: 2;
+    margin: auto;
+}
+
+.greyBox p {
+	color: #888;
+}
+
+.greyBox h1 {
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+}
+
+.show {
+    visibility: visible;
+}
+/* ======================FOOTER====================== */
