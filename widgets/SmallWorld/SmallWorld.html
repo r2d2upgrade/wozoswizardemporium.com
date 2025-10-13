@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+
+<!-- ======================HEAD====================== -->
+<head>
+	<title>Small World</title>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<script src="p5.js"></script>
+	<script src="script.js"></script>
+</head>
+
+
+
+<!-- ======================BODY====================== -->
+<body onload="init()">
+<div id="box">
+
+	<img src="images/dirt_topLeft.png" style="float: left;">
+	<div style="background-image:url('images/dirt_top.png'); float:left; background-repeat:repeat-x; width:792px; height:66px; margin:0px; padding:0px;"> </div>
+	<img src="images/dirt_topRight.png" style="float: left;">
+	<div style="clear: both;"></div>
+
+	<div id="midBox" style="height: 1000px">
+		<div style="background-image:url('images/dirt_left.png'); float:left; background-repeat:repeat-y; width:51px; height:100%; margin:0px; padding:0px;"> </div>
+
+		<div id="content" style="float: left;">
+
+			<canvas id="myCanvas" width="600" height="400"></canvas>
+
+			<!-- View Angle -->
+			<div id="paramAngle" class="slideContainer">
+				<h1 class="ParamName">Angle</h1>
+				<input oninput="updateParamDisplay('paramAngle')" type="range" min="0" max="359" value="0">
+				<h1 class="ParamVal">0</h1>
+				<div style="clear: both"></div>
+			</div>
+			<!-- Zoom -->
+			<div id="paramZoom" class="slideContainer">
+				<h1 class="ParamName">Zoom</h1>
+				<input oninput="updateParamDisplay('paramZoom')" type="range" min="1" max="4" value="1">
+				<h1 class="ParamVal">0</h1>
+				<div style="clear: both"></div>
+			</div>
+			<!-- View Buttons -->
+			<div class="split50">
+				<button onclick="set2D(false)">3D View</button>
+			</div>
+			<div class="split50">
+				<button onclick="set2D(true)">2D View</button>
+			</div>
+			<div style="clear: both"></div>
+
+			<div class="seperator"></div>
+
+			<!-- Generate -->
+			<button onclick="generateTerrain()">Generate</button>
+			<div class="seperator"></div>
+
+			<button onclick="generateSeed()">Randomize Seed</button>
+			<!-- Seed -->
+			<div id="paramSeed" class="slideContainer">
+				<h1 class="ParamName">Seed</h1>
+				<input type="text">
+			</div>
+			<!-- Size -->
+			<div id="paramSize" class="slideContainer">
+				<h1 class="ParamName">Size</h1>
+				<input oninput="updateParamDisplay('paramSize')" type="range" min="1" max="128" value="80">
+				<h1 class="ParamVal">0</h1>
+				<div style="clear: both"></div>
+			</div>
+			<!-- Height -->
+			<div id="paramHeight" class="slideContainer">
+				<h1 class="ParamName">Height</h1>
+				<input oninput="updateParamDisplay('paramHeight')" type="range" min="1" max="100" value="50">
+				<h1 class="ParamVal">0</h1>
+				<div style="clear: both"></div>
+			</div>
+			<!-- Frequency -->
+			<div id="paramFrequency" class="slideContainer">
+				<h1 class="ParamName">Frequency</h1>
+				<input oninput="updateParamDisplay('paramFrequency')" type="range" min="1" max="50" value="10">
+				<h1 class="ParamVal">0</h1>
+				<div style="clear: both"></div>
+			</div>
+
+		</div>
+
+		<div style="background-image:url('images/dirt_right.png'); float:left; background-repeat:repeat-y; width:51px; height:100%; margin:0px; padding:0px;"> </div>
+		<div style="clear: both;"></div>
+	</div>
+
+	<img src="images/dirt_bottomLeft.png" style="float: left;">
+	<div style="background-image:url('images/dirt_bottom.png'); float:left; background-repeat:repeat-x; width:792px; height:66px; margin:0px; padding:0px;"> </div>
+	<img src="images/dirt_bottomRight.png" style="float: left;">
+	<div style="clear: both;"></div>
+
+</div>
+</body>
+
+
+
+<!-- ======================FOOTER====================== -->
+<footer>
+</footer>
+
+</html>

@@ -1,0 +1,145 @@
+body {
+	padding: 0px;
+	background: linear-gradient(#99d9ea, #204e93, #99d9ea);
+	margin: 0;
+    height: 100%;
+}
+
+#box {
+	width: 900px;
+	text-align: center;
+	align-self: center;
+	margin:auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	background-color: none;
+}
+
+#midBox {
+	padding: 0px;
+	margin: 0px;
+}
+
+#content {
+	background-color: #2b2d40;
+	padding: 0px;
+	margin: 0px;
+	width: 795px;
+	height: 100%;
+}
+
+#myCanvas {
+	margin: auto;
+	border-style: solid;
+	border-width: 3px;
+	border-color: #444764;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.slideContainer {
+	width: 80%;
+	padding: 10px;
+	margin: auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #444764;
+}
+
+	.slideContainer h1 {
+		color: #ffffff;
+		font-size: 15px;
+		margin: 5px;
+		margin-left: 10px;
+		margin-right: 10px;
+		width: 15%;
+	}
+		.slideContainer .ParamName {
+			float: left;
+		}
+		.slideContainer .ParamVal {
+			float: right;
+		}
+	.slideContainer input {
+		width: 60%;
+		float: center;
+	}
+
+button {
+	width: 80%;
+	padding: 10px;
+	margin: auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: #444764;
+	color: white;
+	border: none;
+}
+	button:hover {
+		background-color: white;
+		color: #444764;
+	}
+
+.seperator {
+	height: 1px;
+	width: 95%;
+	margin: auto;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	background-color: white;
+}
+
+.split10 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 10%;
+}
+.split20 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 20%;
+}
+.split30 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 30%;
+}
+.split40 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 40%;
+}
+.split50 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 50%;
+}
+.split60 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 60%;
+}
+.split70 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 70%;
+}
+.split80 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 80%;
+}
+.split90 {
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	width: 90%;
+}
