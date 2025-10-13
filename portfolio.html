@@ -1,0 +1,264 @@
+<!doctype html>
+<html>
+
+<!--========================================================================================================================
+==========================================================================================================================
+  _  _ ___   _   ___  
+ | || | __| /_\ |   \ 
+ | __ | _| / _ \| |) |
+ |_||_|___/_/ \_\___/ 
+=======================================================-->
+<head>
+    <title>Wozo's Wizard Emporium</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="styles/mobile.css">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:901px)" href="styles/main.css">
+    <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+
+<style>
+    main {
+    background-image: none;
+    box-shadow: none;
+    max-width: 900px;
+    }
+
+    .itemIcon {
+        border-radius: 10px;
+        background-color: rgba(0,0,0,0.2);
+        background-size: 140px 140px;
+        background-position: center;
+        padding: 0px;
+        margin: 5px;
+        transition-duration: 0.3s;
+        cursor: pointer;
+        box-shadow: 0px 0px 15px 0px rgba(209,82,255,0.4);
+        width: 140px;
+        height: 140px;
+        float: left;
+    }
+    .itemIcon:hover {
+        background-color: rgba(77, 40, 0, 0.5);
+        box-shadow: 0px 0px 30px 0px #ff941a, inset 0px 0px 15px 0px #b35f00;
+        background-size: 150px 150px;
+    }
+
+    h1 {
+        user-select: none;
+    }
+    h2 {
+        user-select: none;
+        clear: both;
+    }
+
+    details {
+        margin-bottom: 20px;
+    }
+    summary {
+        font-weight: bold;
+        text-align: center;
+        color: #CBCBCB;
+        text-shadow: 0px 5px 10px rgba(0,0,0,0.5), 0px 2px 0px #666, 0px -1px 0px #ffffff;
+    }
+
+    #showcase {
+        z-index: 1;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.7);
+        display: none;
+    }
+
+    #close {
+        font-size: 60px;
+        line-height: 55px;
+        width: 60px;
+        height: 60px;
+        user-select: none;
+        background-color: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition-duration: 0.5s;
+        float: right;
+        z-index: 2;
+        text-align: center;
+        margin-bottom: -100px;
+    }
+        #close:hover {
+            background-color: #b35f00;
+            color: black;
+        }
+
+    #info_image {
+        display: block;
+        max-width: 100%;
+        max-height: calc(100% - 110px);
+        margin: auto;
+        clear: both;
+    }
+    #info_title {
+        float: left;
+    }
+    #info_date {
+        float: right;
+    }
+    #info_tags {
+        clear: both;
+    }
+</style>
+
+<script src="portfolio/portfolio.js"></script>
+<script>
+function init() {
+
+    function addItems() {
+        //3D MODELLING
+        var obj_port3DModel = document.getElementById("port3DModel");
+        for (let i = 0; i < array_port3DModel.length; i++) {
+            var itemIcon = document.createElement('div');
+            itemIcon.className = "itemIcon"
+            itemIcon.style.backgroundImage = "url('portfolio/" + array_port3DModel[i].image + " Thumb.png')";
+            itemIcon.onclick = function() {showItem1(i)};
+            obj_port3DModel.appendChild(itemIcon);
+        }
+
+        //ILLUSTRATIONS
+        var obj_portIllustrations = document.getElementById("portIllustrations");
+        for (let i = 0; i < array_portIllustrations.length; i++) {
+            var itemIcon = document.createElement('div');
+            itemIcon.className = "itemIcon"
+            itemIcon.style.backgroundImage = "url('portfolio/" + array_portIllustrations[i].image + " Thumb.png')";
+            itemIcon.onclick = function() {showItem2(i)};
+            obj_portIllustrations.appendChild(itemIcon);
+        }
+    }
+
+    addItems();
+}
+
+function showItem1(itemNum) {
+    document.getElementById("showcase").style.display = "block";
+    document.getElementById("info_image").src = "portfolio/" + array_port3DModel[itemNum].image + ".png";
+    document.getElementById("info_title").innerHTML = array_port3DModel[itemNum].title;
+    document.getElementById("info_date").innerHTML = array_port3DModel[itemNum].date;
+    document.getElementById("info_tags").innerHTML = array_port3DModel[itemNum].tags;
+}
+
+function showItem2(itemNum) {
+    document.getElementById("showcase").style.display = "block";
+    document.getElementById("info_image").src = "portfolio/" + array_portIllustrations[itemNum].image + ".png";
+    document.getElementById("info_title").innerHTML = array_portIllustrations[itemNum].title;
+    document.getElementById("info_date").innerHTML = array_portIllustrations[itemNum].date;
+    document.getElementById("info_tags").innerHTML = array_portIllustrations[itemNum].tags;
+}
+
+function hideShowcase() {
+    document.getElementById("showcase").style.display = "none";
+}
+</script>
+
+</head>
+
+<!--========================================================================================================================
+==========================================================================================================================
+  ___  ___  _____   __
+ | _ )/ _ \|   \ \ / /
+ | _ \ (_) | |) \ V / 
+ |___/\___/|___/ |_|  
+=======================================================-->
+<body onload="init()">
+
+<div id="wrapper">
+
+<div id="showcase">
+    <p id="close" onclick="hideShowcase()">×</p>
+    <img id="info_image">
+    <div style="width:100%; max-width: 900px; margin: auto">
+        <h3 id="info_title">Title</h3>
+        <h3 id="info_date">Date</h3>
+        <p id="info_tags">Tags</p>
+    </div>
+    <div style="clear: both"></div>
+</div>
+
+<!--========================================================================================================================
+==========================================================================================================================
+  __  __   _   ___ _  _ 
+ |  \/  | /_\ |_ _| \| |
+ | |\/| |/ _ \ | || .` |
+ |_|  |_/_/ \_\___|_|\_|
+=======================================================-->
+<main>
+    <h1>Portfolio</h1>
+
+    <h2>Software</h2>
+
+        <!-- MINECRAFT MAP GEN -->
+        <details>
+            <p>A tool that turns images into Minecraft Map blueprints that allows you to build map art by hand.</p>
+            <a href="widgets/MinecraftMapInstructionGen/MinecraftMapInstructionGen.html"><div class="sectionLink">
+                <img src="portfolio/mapGenLogo.png" style="max-width: 40%">
+                <h1 style="max-width: 60%">Start</h1>
+            </div></a>
+            <img src="portfolio/Mapgen Preview.png" style="margin: auto; display: block">
+            <summary>Minecraft Map Blueprint Generator</summary>
+        </details>
+
+        <!-- THAUMCRAFT HELPER -->
+        <details>
+            <p>This online program is a helpful tool for the Minecraft Mod Thaumcraft. It calculates the shortest connecting path between two aspects, and shows how you can craft each aspect.</p>
+            <a href="widgets/ThaumcraftHelper/ThaumcraftHelper.html"><div class="sectionLink">
+                <img src="portfolio/Thaumcraft Helper Icon.png" style="max-width: 40%">
+                <h1 style="max-width: 60%">Start</h1>
+            </div></a>
+            <img src="portfolio/ThaumcraftHelper.png" style="margin: auto; display: block">
+            <summary>Thaumcraft Research Helper</summary>
+        </details>
+
+        <!-- SMALL WORLD -->
+        <details>
+            <p>A little experimental webtoy that lets you fiddle around with terrain generation.</p>
+            <a href="widgets/SmallWorld/SmallWorld.html"><div class="sectionLink">
+                <img src="portfolio/SmallWorld Icon.png" style="max-width: 40%">
+                <h1 style="max-width: 60%">Start</h1>
+            </div></a>
+            <img src="portfolio/SmallWorld.png" style="margin: auto; display: block">
+            <summary>Small World</summary>
+        </details>
+
+        
+
+    <hr>
+
+    <h2>3D Modelling</h2>
+    <div id="port3DModel"></div>
+    <div style="clear: both"></div>
+
+    <hr>
+
+    <h2>Illustrations</h2>
+    <div id="portIllustrations"></div>
+    <div style="clear: both"></div>
+</main>
+
+<!--========================================================================================================================
+==========================================================================================================================
+  ___ ___   ___ _____ ___ ___ 
+ | __/ _ \ / _ \_   _| __| _ \
+ | _| (_) | (_) || | | _||   /
+ |_| \___/ \___/ |_| |___|_|_\
+=======================================================-->
+<footer>
+    <div id="footerWrapper">
+        <img id="stamp" src="images/stamp.png">
+        <p>© Sir Wignar Walter Wozo III<br>The Wizard<br>The First Age - 2024</p>
+    </div>
+</footer>
+
+</div>
+</body>
+
+</html>
